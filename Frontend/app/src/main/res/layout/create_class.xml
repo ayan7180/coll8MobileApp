@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageButton
+        android:id="@+id/homeButton"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_gravity="start|top"
+        android:backgroundTint="@color/white"
+        app:srcCompat="@drawable/homeimg_btn" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="148dp"
+        app:srcCompat="@drawable/create_class" />
+
+    <TextView
+        android:id="@+id/classif_txt"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Class Abbreviation: "
+        android:textColor="@color/red"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/classification_intxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="COMS" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/coursenum_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="5dp"
+        android:text="Course Number: "
+        android:textColor="@color/red"/>
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/course_intxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="309" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <TextView
+        android:id="@+id/title_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="5dp"
+        android:text="Course Title: "
+        android:textColor="@color/red"/>
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/title_intxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Software Development Practices" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/create_classbtn"
+        android:layout_width="200dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="80dp"
+        android:layout_gravity="center"
+        android:text="+ Create Class"
+        android:backgroundTint="@color/red"
+        android:textColor="@color/yellow" />
+<!--    android:onClick="createClass"-->
+
+
+</LinearLayout>

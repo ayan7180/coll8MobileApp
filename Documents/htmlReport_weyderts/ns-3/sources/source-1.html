@@ -1,0 +1,219 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > Announcement</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">backend.Announcements</a>
+</div>
+
+<h1>Coverage Summary for Class: Announcement (backend.Announcements)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Announcement</td>
+<td class="coverageStat">
+  <span class="percent">
+    6.7%
+  </span>
+  <span class="absValue">
+    (1/15)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    13.6%
+  </span>
+  <span class="absValue">
+    (3/22)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">Announcement$HibernateInstantiator$TJlcdbUE</td>
+  </tr>
+  <tr>
+    <td class="name">Announcement$HibernateProxy$11zonw16</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    6.7%
+  </span>
+  <span class="absValue">
+    (1/15)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    13.6%
+  </span>
+  <span class="absValue">
+    (3/22)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package backend.Announcements;
+&nbsp;
+&nbsp;import backend.Courses.Course;
+&nbsp;import jakarta.persistence.*;
+&nbsp;
+&nbsp;import java.sql.Timestamp;
+&nbsp;//import jakarta.persistence.Id;
+&nbsp;
+&nbsp;/**
+&nbsp; * @author Soma Germano
+&nbsp; * This class handles the construction of an announcement
+&nbsp; */
+&nbsp;@Entity
+&nbsp;public class Announcement implements Comparable&lt;Announcement&gt; {
+&nbsp;
+&nbsp;    //private fields
+&nbsp;    @Id
+&nbsp;    @GeneratedValue(strategy = GenerationType.IDENTITY)
+&nbsp;    private int id;
+&nbsp;    private String title;
+&nbsp;    private String text;
+&nbsp;    //TODO lastModification never updated
+&nbsp;    private Timestamp creationDate;
+&nbsp;    private Timestamp lastModification;
+&nbsp;
+&nbsp;    @ManyToOne(cascade = CascadeType.PERSIST)
+&nbsp;    @JoinColumn(name = &quot;courseID&quot;)
+&nbsp;    private Course course;
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new instance of the announcement class
+&nbsp;     * @param title
+&nbsp;     * @param text
+&nbsp;     * @param id
+&nbsp;     */
+&nbsp;    //FIXME: might need primary key id
+<b class="nc">&nbsp;    public Announcement(String title, String text, Integer id) {</b>
+<b class="nc">&nbsp;        this.title = title;</b>
+<b class="nc">&nbsp;        this.text = text;</b>
+<b class="nc">&nbsp;        this.id = id;</b>
+<b class="nc">&nbsp;        creationDate = new Timestamp(System.currentTimeMillis());</b>
+<b class="nc">&nbsp;        lastModification = new Timestamp(creationDate.getTime());</b>
+&nbsp;    }
+<b class="fc">&nbsp;    public Announcement() {</b>
+<b class="fc">&nbsp;        creationDate = new Timestamp(System.currentTimeMillis());</b>
+<b class="fc">&nbsp;        lastModification = new Timestamp(creationDate.getTime());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //getters and setters
+&nbsp;
+&nbsp;    /**
+&nbsp;     * when called upon, this method returns the object&#39;s title
+&nbsp;     * @return
+&nbsp;     */
+<b class="nc">&nbsp;    public String getTitle() { return title; }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     *when called upon, this method returns the object&#39;s text
+&nbsp;     * @return
+&nbsp;     */
+<b class="nc">&nbsp;    public String getText() { return text; }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     *when called upon, this method returns the object&#39;s id
+&nbsp;     * @return
+&nbsp;     */
+<b class="nc">&nbsp;    public int getId() { return id; }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     *when called upon, this method sets the object&#39;s title
+&nbsp;     * @param title
+&nbsp;     */
+<b class="nc">&nbsp;    public void setTitle(String title) { this.title = title; }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     *when called upon, this method sets the object&#39;s text
+&nbsp;     * @param text
+&nbsp;     */
+<b class="nc">&nbsp;    public void setText(String text) { this.text = text; }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     *when called upon, this method sets the object&#39;s id
+&nbsp;     * @param id
+&nbsp;     */
+<b class="nc">&nbsp;    public void setId(int id) { this.id = id; }</b>
+&nbsp;
+<b class="nc">&nbsp;    public void setCreationDate(Timestamp creationDate){ this.creationDate = creationDate; }</b>
+<b class="nc">&nbsp;    public Timestamp getCreationDate(){ return this.creationDate; }</b>
+&nbsp;
+<b class="nc">&nbsp;    public void setLastModification(Timestamp lastModification){ this.lastModification = lastModification; }</b>
+<b class="nc">&nbsp;    public Timestamp getLastModification(){ return this.lastModification; }</b>
+&nbsp;
+<b class="nc">&nbsp;    public Course getCourse() { return course; }</b>
+&nbsp;
+<b class="nc">&nbsp;    public void setCourse(Course course) { this.course = course; }</b>
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public int compareTo(Announcement o) {
+<b class="nc">&nbsp;        return this.lastModification.compareTo(o.lastModification);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-12-04 23:37</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,259 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > ProfileController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">backend.Profile</a>
+</div>
+
+<h1>Coverage Summary for Class: ProfileController (backend.Profile)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ProfileController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    14.3%
+  </span>
+  <span class="absValue">
+    (1/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    3.1%
+  </span>
+  <span class="absValue">
+    (1/32)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package backend.Profile;
+&nbsp;
+&nbsp;import io.swagger.v3.oas.annotations.tags.Tag;
+&nbsp;import org.springframework.http.HttpStatus;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.web.bind.*;
+&nbsp;
+&nbsp;import backend.Users.*;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;/**
+&nbsp; * @author Soma Germano
+&nbsp; * this class handles the CRUD operations of a profile object
+&nbsp; */
+&nbsp;@RestController
+&nbsp;@Tag(name = &quot;Profile Controller&quot;, description = &quot;//TODO Soma&quot;)
+<b class="fc">&nbsp;public class ProfileController {</b>
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    ProfileRepository profRepo;
+&nbsp;    @Autowired
+&nbsp;    UserRepository userRepo;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Create User Profile referencing User from database
+&nbsp;     * @param user
+&nbsp;     * @return
+&nbsp;     */
+&nbsp;    @PostMapping(&quot;/profile&quot;)
+&nbsp;    public String createUserProfile(@RequestBody User user){
+&nbsp;        //retrieve user info from database-repo
+&nbsp;        //check
+<b class="nc">&nbsp;         Optional&lt;User&gt; existingUser = userRepo.findById(user.getId());</b>
+<b class="nc">&nbsp;        if(existingUser.isPresent()) {</b>
+<b class="nc">&nbsp;            Profile newprof = new Profile(user);</b>
+<b class="nc">&nbsp;            profRepo.save(newprof);</b>
+<b class="nc">&nbsp;            return &quot;saved new prof to repo&quot;;</b>
+&nbsp;        }else{
+<b class="nc">&nbsp;            return &quot;user doesnt exist&quot;;</b>
+&nbsp;        }
+&nbsp;        //use pfp filepath and save into database
+&nbsp;
+&nbsp;        //
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves all info for the user&#39;s profile
+&nbsp;     * @param id
+&nbsp;     * @return
+&nbsp;     */
+&nbsp;    @GetMapping(&quot;/profile/{id}&quot;)
+&nbsp;    public ResponseEntity&lt;Profile&gt; getUserProfile(@PathVariable int id) {
+<b class="nc">&nbsp;        Optional&lt;Profile&gt; profile = profRepo.findById(id);</b>
+&nbsp;
+<b class="nc">&nbsp;        if (profile.isPresent()) {</b>
+<b class="nc">&nbsp;            return ResponseEntity.ok(profile.get());</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * updates profile info  like username and email
+&nbsp;     * @param id
+&nbsp;     * @param updatedProfile
+&nbsp;     * @return
+&nbsp;     */
+&nbsp;    @PutMapping(&quot;/profile/{id}&quot;)
+&nbsp;    public ResponseEntity&lt;String&gt; updateProfile(@PathVariable int id, @RequestBody Profile updatedProfile) {
+<b class="nc">&nbsp;        Optional&lt;Profile&gt; existingProfile = profRepo.findById(id);</b>
+&nbsp;
+<b class="nc">&nbsp;        if (existingProfile.isPresent()) {</b>
+<b class="nc">&nbsp;            Profile profile = existingProfile.get();</b>
+&nbsp;
+&nbsp;            // Update fields
+<b class="nc">&nbsp;            profile.setUser(updatedProfile.getUser());</b>
+<b class="nc">&nbsp;            profile.setEmail(updatedProfile.getUser());</b>
+&nbsp;            // Add more fields to update as needed
+&nbsp;
+<b class="nc">&nbsp;            profRepo.save(profile);</b>
+<b class="nc">&nbsp;            return ResponseEntity.ok(&quot;Profile updated successfully.&quot;);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(&quot;Profile not found.&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * allows user to update profile photo by inputting a new profile photo filename
+&nbsp;     * @param id
+&nbsp;     * @param photoFilePath
+&nbsp;     * @return
+&nbsp;     */
+&nbsp;    @PutMapping(&quot;/{id}/photo&quot;)
+&nbsp;    public ResponseEntity&lt;String&gt; updateProfilePhoto(@PathVariable int id, @RequestParam String photoFilePath) {
+<b class="nc">&nbsp;        Optional&lt;Profile&gt; existingProfile = profRepo.findById(id);</b>
+&nbsp;
+<b class="nc">&nbsp;        if (existingProfile.isPresent()) {</b>
+<b class="nc">&nbsp;            Profile profile = existingProfile.get();</b>
+<b class="nc">&nbsp;            profile.setProfileImage(photoFilePath);</b>
+<b class="nc">&nbsp;            profRepo.save(profile);</b>
+<b class="nc">&nbsp;            return ResponseEntity.ok(&quot;Profile photo updated successfully.&quot;);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(&quot;Profile not found.&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * deletes a profile from the database by id
+&nbsp;     * @param id
+&nbsp;     * @return
+&nbsp;     */
+&nbsp;    @DeleteMapping(&quot;/profile/{id}&quot;)
+&nbsp;    public String deleteProfile(@PathVariable int id){
+&nbsp;        //check if user is in databse
+<b class="nc">&nbsp;        Optional&lt;Profile&gt; existingProf = profRepo.findById(id);</b>
+<b class="nc">&nbsp;        if(existingProf.isPresent()){</b>
+<b class="nc">&nbsp;            profRepo.deleteById(existingProf.get().getProfileId());</b>
+<b class="nc">&nbsp;            return &quot;user profile deleted&quot;;</b>
+&nbsp;        }else{
+<b class="nc">&nbsp;            return &quot;profile not found/dne&quot;;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * lists all profiles in the database
+&nbsp;     * @return
+&nbsp;     */
+&nbsp;    @GetMapping(&quot;/profile/all&quot;)
+&nbsp;    public List&lt;Profile&gt; getAllProfiles(){
+<b class="nc">&nbsp;        return profRepo.findAll();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //helper method to store file -&gt; moved to user class
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-12-04 23:37</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme without ActionBar. -->
+    <style name="Base.Theme.Home_page" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
+
+    <!-- Theme with ActionBar -->
+    <style name="Theme.Home_page.WithActionBar" parent="Theme.AppCompat.DayNight.DarkActionBar">
+        <!-- Additional customizations for ActionBar, if any -->
+    </style>
+
+    <!-- Default theme without ActionBar -->
+    <style name="Theme.Home_page" parent="Base.Theme.Home_page" />
+</resources>

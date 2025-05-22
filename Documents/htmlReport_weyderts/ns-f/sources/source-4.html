@@ -1,0 +1,229 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > UserUtils</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">backend.Users</a>
+</div>
+
+<h1>Coverage Summary for Class: UserUtils (backend.Users)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">UserUtils</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (3/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    32.1%
+  </span>
+  <span class="absValue">
+    (9/28)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    46.3%
+  </span>
+  <span class="absValue">
+    (19/41)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package backend.Users;
+&nbsp;
+&nbsp;import backend.Courses.Course;
+&nbsp;import backend.Courses.CourseRepository;
+&nbsp;import backend.Courses.CourseUtils;
+&nbsp;import backend.Files.SysFile;
+&nbsp;import backend.Majors.MajorRepository;
+&nbsp;import com.fasterxml.jackson.databind.JsonNode;
+&nbsp;
+&nbsp;import java.util.Optional;
+&nbsp;import java.util.Set;
+&nbsp;
+<b class="nc">&nbsp;public class UserUtils {</b>
+&nbsp;
+&nbsp;    public static User getUserByJSON(JsonNode userJson,
+&nbsp;                                     UserRepository userRepository)
+&nbsp;    throws Exception{
+&nbsp;
+&nbsp;        User user;
+&nbsp;
+<b class="nc">&nbsp;        String username = userJson.get(&quot;username&quot;).asText();</b>
+&nbsp;
+<b class="nc">&nbsp;        if(userRepository.findByUsername(username).isEmpty()){</b>
+<b class="nc">&nbsp;            throw new Exception();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        user = userRepository.findByUsername(username).get();</b>
+&nbsp;
+<b class="nc">&nbsp;        return user;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static boolean verifyUserByStub(UserStubs.Credentials cred, UserRepository userRepo)
+&nbsp;    throws Exception
+&nbsp;    {
+<b class="fc">&nbsp;        Optional&lt;User&gt; opUser = userRepo.findByUsername(cred.getUsername());</b>
+<b class="pc">&nbsp;        if(opUser.isEmpty()) { throw new Exception(&quot;Could not find user&quot;); }</b>
+<b class="fc">&nbsp;        User user = opUser.get();</b>
+<b class="pc">&nbsp;        if(user.getPassword().equals(cred.getPassword())){</b>
+<b class="fc">&nbsp;            return true;</b>
+&nbsp;        }
+&nbsp;        else{
+<b class="nc">&nbsp;            return false;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    // Method that takes user credentials and a file and checks to see if that user is an owner or superuser
+&nbsp;    public static boolean verifyFileOwner(UserStubs.Credentials cred, SysFile sysFile, UserRepository userRepository) throws Exception {
+&nbsp;        // Verify the user has the right user/pass combo
+<b class="nc">&nbsp;        if(!UserUtils.verifyUserByStub(cred, userRepository)){</b>
+<b class="nc">&nbsp;            throw new Exception(&quot;Incorrect user credentials&quot;);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        // Verify file belongs to this user, or if they&#39;re a superuser
+<b class="nc">&nbsp;        User owner = sysFile.getOwner();</b>
+<b class="nc">&nbsp;        if( !owner.getUsername().equals(cred.getUsername()) ){</b>
+<b class="nc">&nbsp;            throw new Exception(&quot;User does not own this file&quot;);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        else if( !owner.isSuperuser() ){</b>
+<b class="nc">&nbsp;            throw new Exception(&quot;User does not own this file, or is not a superuser&quot;);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        // If no checks fail, return true.
+<b class="nc">&nbsp;        return true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static boolean verifyCourseOwner(UserStubs.Credentials cred, Course course, UserRepository userRepository) throws Exception {
+&nbsp;        // Verify the user has the right user/pass combo
+<b class="pc">&nbsp;        if(!UserUtils.verifyUserByStub(cred, userRepository)){</b>
+<b class="nc">&nbsp;            throw new Exception(&quot;Incorrect user credentials&quot;);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        // Grab user
+<b class="fc">&nbsp;        Optional&lt;User&gt; opUser = userRepository.findByUsername(cred.getUsername());</b>
+<b class="pc">&nbsp;        if(opUser.isEmpty()){</b>
+<b class="nc">&nbsp;            throw new Exception(&quot;User couldn&#39;t be found&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        User user = opUser.get();</b>
+&nbsp;
+&nbsp;        // Verify course belongs to this user, or if they&#39;re a superuser
+<b class="fc">&nbsp;        Set&lt;User&gt; owners = course.getOwners();</b>
+<b class="pc">&nbsp;        if( !owners.contains(user) ){</b>
+<b class="nc">&nbsp;            throw new Exception(&quot;User does not own this file&quot;);</b>
+&nbsp;        }
+<b class="pc">&nbsp;        else if( !owners.contains(user) &amp;&amp; !user.isSuperuser() ){</b>
+<b class="nc">&nbsp;            throw new Exception(&quot;User does not own this file, or is not a superuser&quot;);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        // If no checks fail, return true.
+<b class="fc">&nbsp;        return true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static boolean verifySuperuserStatus(UserStubs.Credentials cred, UserRepository userRepository) throws Exception{
+&nbsp;
+<b class="fc">&nbsp;        Optional&lt;User&gt; opUser = userRepository.findByUsername(cred.getUsername());</b>
+<b class="pc">&nbsp;        if(opUser.isEmpty()) {</b>
+<b class="nc">&nbsp;            throw new Exception(&quot;That username doesn&#39;t exist&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        User user = opUser.get();</b>
+&nbsp;
+&nbsp;
+&nbsp;        // Verify the user has the right user/pass combo
+<b class="pc">&nbsp;        if(!UserUtils.verifyUserByStub(cred, userRepository)){</b>
+<b class="nc">&nbsp;            throw new Exception(&quot;Incorrect user credentials&quot;);</b>
+&nbsp;        }
+&nbsp;
+<b class="pc">&nbsp;        else if( !user.isSuperuser() ){</b>
+<b class="nc">&nbsp;            throw new Exception(&quot;User is not a superuser&quot;);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        // If no checks fail, return true.
+<b class="fc">&nbsp;        return true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-12-04 23:37</div>
+</div>
+</body>
+</html>

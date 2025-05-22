@@ -1,0 +1,18 @@
+SET FOREIGN_KEY_CHECKS=0;
+DROP table DB309.annotation;
+DROP table DB309.annotation_children;
+DROP table DB309.annotations_files_ref;
+DROP table DB309.course;
+DROP table DB309.course_announcements;
+DROP table DB309.announcement;
+DROP table DB309.course_files;
+DROP table DB309.file_library;
+DROP table DB309.major;
+DROP table DB309.major_courses;
+DROP table DB309.sys_file;
+DROP table DB309.user;
+DROP table DB309.user_courses;
+DROP table DB309.user_files_owner;
+DROP table DB309.users_files_edit;
+DROP table DB309.profile;
+SET FOREIGN_KEY_CHECKS=1;

@@ -1,0 +1,474 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > FileController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">backend.Files</a>
+</div>
+
+<h1>Coverage Summary for Class: FileController (backend.Files)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">FileController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    16.7%
+  </span>
+  <span class="absValue">
+    (1/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/38)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    6.7%
+  </span>
+  <span class="absValue">
+    (8/119)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package backend.Files;
+&nbsp;
+&nbsp;import backend.Courses.*;
+&nbsp;import backend.Majors.MajorStubs;
+&nbsp;import backend.Users.UserUtils;
+&nbsp;import backend.Users.*;
+&nbsp;import backend.Files.*;
+&nbsp;import backend.Majors.MajorRepository;
+&nbsp;import backend.Users.UserRepository;
+&nbsp;import com.fasterxml.jackson.databind.JsonNode;
+&nbsp;import com.fasterxml.jackson.databind.ObjectMapper;
+&nbsp;import com.fasterxml.jackson.databind.node.ObjectNode;
+&nbsp;import io.swagger.v3.oas.annotations.Operation;
+&nbsp;import io.swagger.v3.oas.annotations.Parameter;
+&nbsp;import io.swagger.v3.oas.annotations.media.Content;
+&nbsp;import io.swagger.v3.oas.annotations.media.ExampleObject;
+&nbsp;import io.swagger.v3.oas.annotations.media.Schema;
+&nbsp;import io.swagger.v3.oas.annotations.responses.ApiResponse;
+&nbsp;import io.swagger.v3.oas.annotations.responses.ApiResponses;
+&nbsp;import io.swagger.v3.oas.annotations.tags.Tag;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.core.io.ByteArrayResource;
+&nbsp;import org.springframework.core.io.Resource;
+&nbsp;import org.springframework.http.MediaType;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;import org.springframework.web.multipart.MultipartFile;
+&nbsp;
+&nbsp;import java.io.File;
+&nbsp;import java.io.FileInputStream;
+&nbsp;import java.io.FileOutputStream;
+&nbsp;import java.io.IOException;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;// https://www.geeksforgeeks.org/spring-boot-file-handling/
+&nbsp;
+&nbsp;@RestController
+&nbsp;@Tag(name = &quot;File Controller&quot;, description = &quot;Handles files and SysFiles for users and courses.&quot;)
+<b class="fc">&nbsp;public class FileController {</b>
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    CourseRepository courseRepository;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    MajorRepository majorRepository;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    SysFileRepository sysFileRepository;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    UserRepository userRepository;
+&nbsp;
+<b class="fc">&nbsp;    private final String rootPath = &quot;/tmp/coll8Files&quot;;</b>
+<b class="fc">&nbsp;    private final String divider = &quot;/&quot;;</b>
+&nbsp;
+<b class="fc">&nbsp;    private final String fileSearch_Input = &quot;&quot;;</b>
+<b class="fc">&nbsp;    private final String fileUpload_Input = &quot;&quot;;</b>
+<b class="fc">&nbsp;    private final String fileUpdate_Input = &quot;{ \&quot;filename\&quot;: String }&quot;;</b>
+&nbsp;
+<b class="fc">&nbsp;    private final String fileSearch_Output = &quot;&quot;;</b>
+<b class="fc">&nbsp;    private final String fileUpload_Output = &quot;&quot;;</b>
+&nbsp;
+&nbsp;    //////////////////////////////////////////////////
+&nbsp;    // Get Mappings
+&nbsp;    //////////////////////////////////////////////////
+&nbsp;
+&nbsp;    // Unprivileged operation
+&nbsp;    @Operation(summary = &quot;Retrieve a file by its ID&quot;)
+&nbsp;    @ApiResponses(value = {
+&nbsp;            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;The file that has been found&quot;,
+&nbsp;                    content = {
+&nbsp;                            @Content(mediaType = &quot;application/json&quot;,
+&nbsp;                                    examples = @ExampleObject(value = &quot;Resource Object built from File&quot;))
+&nbsp;                    }
+&nbsp;            )
+&nbsp;    })
+&nbsp;    @GetMapping(path = &quot;/file/{FileId}&quot;)
+&nbsp;    public Resource getFileByID(@PathVariable int FileID){
+&nbsp;
+&nbsp;        // File couldn&#39;t be found; return nothing.
+<b class="nc">&nbsp;        if(sysFileRepository.findById(FileID).isEmpty()){</b>
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        SysFile sysFile = sysFileRepository.findById(FileID).get();</b>
+&nbsp;
+&nbsp;        try {
+<b class="nc">&nbsp;            String filePath = sysFile.getFilePath();</b>
+<b class="nc">&nbsp;            File file = new File(filePath);</b>
+<b class="nc">&nbsp;            FileInputStream fileReader = new FileInputStream(file);</b>
+&nbsp;
+<b class="nc">&nbsp;            return new ByteArrayResource(fileReader.readAllBytes());</b>
+<b class="nc">&nbsp;        } catch(Exception e){</b>
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;//    // Test
+&nbsp;//    @GetMapping(path = &quot;/filetest&quot;)
+&nbsp;//    public FileStubs.Search testMethod(){
+&nbsp;//        FileStubs.Search stub = new FileStubs.Search();
+&nbsp;//        return stub;
+&nbsp;//    }
+&nbsp;
+&nbsp;    //////////////////////////////////////////////////
+&nbsp;    // Post Mappings
+&nbsp;    //////////////////////////////////////////////////
+&nbsp;
+&nbsp;    // Unprivileged Operation
+&nbsp;    @Operation(summary = &quot;Search for a files by its user, its course, or both&quot;)
+&nbsp;    @ApiResponses(value = {
+&nbsp;            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;List of files from the search&quot;,
+&nbsp;                    content = {
+&nbsp;                            @Content(mediaType = &quot;application/json&quot;,
+&nbsp;                                    examples = @ExampleObject(value = fileSearch_Output))
+&nbsp;                    }
+&nbsp;            )
+&nbsp;    })
+&nbsp;    @PostMapping(path=&quot;/file/search&quot;, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+&nbsp;    public List&lt;SysFile&gt; searchFile(
+&nbsp;            @RequestPart @Parameter(description = &quot;Search parameters&quot;, required = true) FileStubs.Search stub
+&nbsp;    ){
+<b class="nc">&nbsp;        List&lt;SysFile&gt; files = null;</b>
+&nbsp;        Course course;
+&nbsp;        User user;
+&nbsp;
+<b class="nc">&nbsp;        Integer courseID = stub.getCourseID();</b>
+<b class="nc">&nbsp;        Integer userID = stub.getUserID();</b>
+&nbsp;
+&nbsp;        // courseJson exists and userJson exists: Search by both class and user
+&nbsp;        // TODO finish
+<b class="nc">&nbsp;        if(!(courseID == null) &amp;&amp; !(userID == null)){</b>
+&nbsp;            try{
+<b class="nc">&nbsp;                Optional&lt;Course&gt; opCourse = courseRepository.findById(courseID);</b>
+<b class="nc">&nbsp;                Optional&lt;User&gt; opUser = userRepository.findById(userID);</b>
+<b class="nc">&nbsp;                if(opCourse.isEmpty() || opUser.isEmpty()){</b>
+<b class="nc">&nbsp;                    throw new Exception();</b>
+&nbsp;                }
+<b class="nc">&nbsp;                course = opCourse.get();</b>
+<b class="nc">&nbsp;                user = opUser.get();</b>
+<b class="nc">&nbsp;                files = sysFileRepository.findAllByUserAndCourse(user, course);</b>
+<b class="nc">&nbsp;            } catch(Exception e){</b>
+<b class="nc">&nbsp;                return null;</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;        // courseJson exists: Search by class
+<b class="nc">&nbsp;        else if(!(courseID == null)){</b>
+&nbsp;            try{
+<b class="nc">&nbsp;                Optional&lt;Course&gt; opCourse = courseRepository.findById(courseID);</b>
+<b class="nc">&nbsp;                if(opCourse.isEmpty()){</b>
+<b class="nc">&nbsp;                    throw new Exception();</b>
+&nbsp;                }
+<b class="nc">&nbsp;                course = opCourse.get();</b>
+<b class="nc">&nbsp;                files = sysFileRepository.findAllByCourse(course);</b>
+<b class="nc">&nbsp;            } catch(Exception e){</b>
+<b class="nc">&nbsp;                return null;</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;        // userJson exists: Search by user
+<b class="nc">&nbsp;        else if(!(userID == null)){</b>
+&nbsp;            try{
+<b class="nc">&nbsp;                Optional&lt;User&gt; opUser = userRepository.findById(userID);</b>
+<b class="nc">&nbsp;                if(opUser.isEmpty()){</b>
+<b class="nc">&nbsp;                    throw new Exception();</b>
+&nbsp;                }
+<b class="nc">&nbsp;                user = opUser.get();</b>
+<b class="nc">&nbsp;                files = sysFileRepository.findAllByUser(user);</b>
+<b class="nc">&nbsp;            } catch(Exception e){</b>
+<b class="nc">&nbsp;                return null;</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;        // Neither courseJson or userJson exists: return nothing
+&nbsp;        else {
+<b class="nc">&nbsp;            files = null;</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        return files;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // Unprivileged Operation
+&nbsp;    @Operation(summary = &quot;Uploads a file from a user to a class&quot;)
+&nbsp;    @ApiResponses(value = {@ApiResponse(responseCode = &quot;200&quot;, description = &quot;Status of the Upload&quot;)})
+&nbsp;    @PostMapping(path=&quot;/file/upload&quot;, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+&nbsp;    public String uploadFile(
+&nbsp;            @RequestPart @Parameter(description = &quot;File to upload&quot;, required = true) MultipartFile file,
+&nbsp;            @RequestPart @Parameter(description = &quot;Upload metadata&quot;) FileStubs.Upload stub
+&nbsp;    ){
+&nbsp;
+&nbsp;        Course course;
+&nbsp;        User owner;
+&nbsp;        SysFile sysFile;
+&nbsp;        String filePath;
+&nbsp;        String fileName;
+&nbsp;
+<b class="nc">&nbsp;        fileName = stub.getFileName();</b>
+&nbsp;
+&nbsp;        try{
+<b class="nc">&nbsp;            Optional&lt;Course&gt; opCourse = courseRepository.findById(stub.getCourseID());</b>
+<b class="nc">&nbsp;            if(opCourse.isEmpty()){</b>
+<b class="nc">&nbsp;                throw new Exception();</b>
+&nbsp;            }
+<b class="nc">&nbsp;            course = opCourse.get();</b>
+<b class="nc">&nbsp;        } catch(Exception e){</b>
+<b class="nc">&nbsp;            return &quot;Could not find course&quot;;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        try{
+<b class="nc">&nbsp;            Optional&lt;User&gt; opUser = userRepository.findById(stub.getUserID());</b>
+<b class="nc">&nbsp;            if(opUser.isEmpty()){</b>
+<b class="nc">&nbsp;                throw new Exception();</b>
+&nbsp;            }
+<b class="nc">&nbsp;            owner = opUser.get();</b>
+<b class="nc">&nbsp;        } catch(Exception e){</b>
+<b class="nc">&nbsp;            return &quot;Could not find owner&quot;;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        try{
+<b class="nc">&nbsp;            List&lt;SysFile&gt; files = sysFileRepository.findAllByUserAndCourse(owner, course);</b>
+<b class="nc">&nbsp;            for(SysFile testFile : files){</b>
+<b class="nc">&nbsp;                if(testFile.getFileName().equals(fileName)){ throw new Exception(); }</b>
+&nbsp;            }
+<b class="nc">&nbsp;        } catch (Exception e){</b>
+<b class="nc">&nbsp;            return &quot;SysFile record already exists. Delete or update the old one.&quot;;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        try{
+<b class="nc">&nbsp;            String directoryPath = rootPath</b>
+<b class="nc">&nbsp;                    + divider + course.getId()</b>
+<b class="nc">&nbsp;                    + divider + owner.getId() + divider;</b>
+<b class="nc">&nbsp;            filePath = directoryPath + fileName; // rootPath/ClassID/UserID/fileName</b>
+<b class="nc">&nbsp;            FileUtils.createFile(directoryPath, filePath, file);</b>
+<b class="nc">&nbsp;        } catch(Exception e){</b>
+<b class="nc">&nbsp;            return e.getMessage();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        // Add relationship between file and class in SQL
+<b class="nc">&nbsp;        sysFile = new SysFile(fileName, filePath, course, owner);</b>
+<b class="nc">&nbsp;        course.addSysFile(sysFile);</b>
+<b class="nc">&nbsp;        sysFileRepository.save(sysFile);</b>
+&nbsp;
+<b class="nc">&nbsp;        return &quot;\&quot;ID\&quot;: &quot; + sysFile.getId();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //////////////////////////////////////////////////
+&nbsp;    // Put Mappings
+&nbsp;    //////////////////////////////////////////////////
+&nbsp;
+&nbsp;    // Privileged Operation: Only owners
+&nbsp;    @Operation(summary = &quot;Update the name of a file&quot;)
+&nbsp;    @ApiResponses(value = {@ApiResponse(responseCode = &quot;200&quot;, description = &quot;Status of the Update&quot;)})
+&nbsp;    @PutMapping(path=&quot;/file/{FileID}&quot;, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+&nbsp;    public String updateFile(
+&nbsp;            @PathVariable int FileID,
+&nbsp;            @RequestPart @Parameter(description = &quot;New filename&quot;, required = true) FileStubs.Update stub,
+&nbsp;            @RequestPart @Parameter(description = &quot;User credentials&quot;, required = true) UserStubs.Credentials cred
+&nbsp;    ){
+&nbsp;        // Find the file.
+<b class="nc">&nbsp;        if(sysFileRepository.findById(FileID).isEmpty()){</b>
+<b class="nc">&nbsp;            return &quot;Couldn&#39;t find file&quot;;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        SysFile sysFile = sysFileRepository.findById(FileID).get();</b>
+&nbsp;
+&nbsp;        // Verify user
+<b class="nc">&nbsp;        try{ UserUtils.verifyFileOwner(cred, sysFile, userRepository); }</b>
+<b class="nc">&nbsp;        catch(Exception e){ return e.getMessage(); }</b>
+&nbsp;
+&nbsp;        // Grab filename
+<b class="nc">&nbsp;        String newName = stub.getFileName();</b>
+&nbsp;
+&nbsp;        // Grab old file path and the old file
+<b class="nc">&nbsp;        String oldFilePath = sysFile.getFilePath();</b>
+<b class="nc">&nbsp;        File oldFile = new File(oldFilePath);</b>
+&nbsp;
+&nbsp;        // Create old and new File path
+<b class="nc">&nbsp;        String[] oldFilePathFields = oldFilePath.split(divider);</b>
+<b class="nc">&nbsp;        int numFields = oldFilePathFields.length;</b>
+<b class="nc">&nbsp;        String newFilePath = &quot;&quot;;</b>
+<b class="nc">&nbsp;        for(int i = 0; i&lt;numFields-1; i++){</b>
+<b class="nc">&nbsp;            String nextPathField = oldFilePathFields[i];</b>
+<b class="nc">&nbsp;            if(!nextPathField.isEmpty()){</b>
+<b class="nc">&nbsp;                newFilePath += divider;</b>
+<b class="nc">&nbsp;                newFilePath += nextPathField;</b>
+&nbsp;            }
+&nbsp;        }
+<b class="nc">&nbsp;        newFilePath += divider;</b>
+<b class="nc">&nbsp;        newFilePath += newName;</b>
+&nbsp;
+&nbsp;        // TODO Break this try-catch statement up
+&nbsp;        // TODO Delete or report sysfile which cannot be located
+&nbsp;        // Move file from old file location to new file location
+&nbsp;        try{
+<b class="nc">&nbsp;            FileInputStream fileReader = new FileInputStream(oldFilePath);</b>
+<b class="nc">&nbsp;            FileOutputStream fileWriter = new FileOutputStream(newFilePath);</b>
+<b class="nc">&nbsp;            fileWriter.write(fileReader.readAllBytes());</b>
+<b class="nc">&nbsp;            oldFile.delete();</b>
+<b class="nc">&nbsp;        } catch(Exception e){</b>
+<b class="nc">&nbsp;            return &quot;Failed to replace file&quot;;</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        sysFile.setFilePath(newFilePath);</b>
+<b class="nc">&nbsp;        sysFile.setFileName(newName);</b>
+<b class="nc">&nbsp;        sysFileRepository.save(sysFile);</b>
+&nbsp;
+<b class="nc">&nbsp;        return &quot;Success&quot;;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //////////////////////////////////////////////////
+&nbsp;    // Del Mappings
+&nbsp;    //////////////////////////////////////////////////
+&nbsp;
+&nbsp;    // Privileged Operation: Only owners
+&nbsp;    @Operation(summary = &quot;Delete a file by its ID&quot;)
+&nbsp;    @ApiResponses(value = {@ApiResponse(responseCode = &quot;200&quot;, description = &quot;Status of the Delete&quot;)})
+&nbsp;    @DeleteMapping(path=&quot;/file/{FileID}&quot;, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+&nbsp;    public String deleteFile(
+&nbsp;            @PathVariable int FileID,
+&nbsp;            @RequestPart @Parameter(description = &quot;User credentials&quot;, required = true) UserStubs.Credentials cred
+&nbsp;    ){
+&nbsp;
+&nbsp;        // Find the file.
+<b class="nc">&nbsp;        if(sysFileRepository.findById(FileID).isEmpty()){</b>
+<b class="nc">&nbsp;            return &quot;Couldn&#39;t find file&quot;;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        SysFile sysFile = sysFileRepository.findById(FileID).get();</b>
+&nbsp;
+&nbsp;        // Verify user
+<b class="nc">&nbsp;        try{ UserUtils.verifyFileOwner(cred, sysFile, userRepository); }</b>
+<b class="nc">&nbsp;        catch(Exception e){ return e.getMessage(); }</b>
+&nbsp;
+&nbsp;        // Grab the file from the filesystem
+<b class="nc">&nbsp;        String filePath = sysFile.getFilePath();</b>
+<b class="nc">&nbsp;        File file = new File(filePath);</b>
+&nbsp;
+&nbsp;        // Check for filesystem existence
+<b class="nc">&nbsp;        if(!file.exists()){</b>
+<b class="nc">&nbsp;            FileUtils.deleteSysFile(sysFile, sysFileRepository);</b>
+<b class="nc">&nbsp;            return &quot;File didn&#39;t exist; deleted SysFile entry&quot;;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        // Delete the file
+<b class="nc">&nbsp;        if(file.delete()){</b>
+<b class="nc">&nbsp;            FileUtils.deleteSysFile(sysFile, sysFileRepository);</b>
+&nbsp;        } else{
+<b class="nc">&nbsp;            return &quot;Failed to delete file!&quot;;</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        return &quot;Successfully deleted file&quot;;</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    //////////////////////////////////////////////////
+&nbsp;    // Other Methods
+&nbsp;    //////////////////////////////////////////////////
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-12-04 23:37</div>
+</div>
+</body>
+</html>

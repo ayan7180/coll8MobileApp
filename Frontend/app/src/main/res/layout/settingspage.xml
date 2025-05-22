@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal">
+
+    <ImageButton
+        android:id="@+id/homeButton"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_gravity="start|top"
+        android:backgroundTint="@color/white"
+        app:srcCompat="@drawable/homeimg_btn" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/pictureWidget"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginLeft="60dp"
+        android:background="@color/white"
+        app:shapeAppearanceOverlay="@style/circular"
+        app:strokeWidth="5dp"
+        app:strokeColor="@color/black"
+        android:padding="5dp"
+        app:srcCompat="@drawable/baseline_person_24" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/cameraIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:tint="@color/black"
+        app:backgroundTint="@color/red"
+        android:layout_marginTop="200dp"
+        app:srcCompat="@drawable/baseline_photo_camera_24"
+        android:contentDescription=""/>
+
+    <TextView
+        android:id="@+id/welcome"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:hint="Settings"
+        android:inputType="text"
+        android:padding="18dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        android:layout_marginTop="300dp"
+        android:layout_marginLeft="-300dp"
+        android:textSize="30sp"/>
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="350dp"
+        android:layout_marginLeft="-300dp"
+        android:layout_marginRight="150dp"
+        android:text="username:"
+        android:textSize="20dp"
+        android:textColor="@color/black"/>
+    <TextView
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="380dp"
+        android:layout_marginLeft="-360dp"
+        android:layout_marginRight="150dp"
+        android:text="password:"
+        android:textSize="20dp"
+        android:textColor="@color/black"/>
+
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:backgroundTint="@color/red"
+        android:text="back"
+        android:textColor="@color/yellow"
+        android:layout_marginTop="300dp"
+        android:layout_marginLeft="-180dp"/>
+
+    <Button
+        android:id="@+id/darkModeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="450dp"
+        android:backgroundTint="@color/red"
+        android:text="Dark mode"
+        android:textColor="@color/yellow"
+        android:layout_marginLeft="-120dp"/>
+
+    <TextView
+        android:id="@+id/messageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Default message" />
+
+</LinearLayout>

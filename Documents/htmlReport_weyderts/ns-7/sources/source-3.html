@@ -1,0 +1,127 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > FileLibraryRepository</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">backend.FileLibrary</a>
+</div>
+
+<h1>Coverage Summary for Class: FileLibraryRepository (backend.FileLibrary)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">FileLibraryRepository</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package backend.FileLibrary;
+&nbsp;
+&nbsp;//imports
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;import org.springframework.data.jpa.repository.JpaRepository;
+&nbsp;import org.springframework.data.jpa.repository.Query;
+&nbsp;import org.springframework.stereotype.Repository;
+&nbsp;import org.springframework.transaction.annotation.Transactional;
+&nbsp;
+&nbsp;
+&nbsp;//
+&nbsp;
+&nbsp;/**
+&nbsp; * @author Soma Germano
+&nbsp; * this class handles the CRUD operations provided/inherited by JPA repository
+&nbsp; */
+&nbsp;public interface FileLibraryRepository extends JpaRepository&lt;FileLibrary, String&gt; {
+&nbsp;    //
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this inherited method searches a file by its name
+&nbsp;     * @param fileName
+&nbsp;     * @return
+&nbsp;     */
+&nbsp;    @Query(&quot;SELECT f from FileLibrary f WHERE f.fileName = ?1&quot;)
+&nbsp;    Optional&lt;FileLibrary&gt; findByName(String fileName);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this inherited method searches a file by its id
+&nbsp;     * @param id
+&nbsp;     * @return
+&nbsp;     */
+&nbsp;    @Query(&quot;SELECT f from FileLibrary f WHERE f.id = ?1&quot;)
+&nbsp;    Optional&lt;FileLibrary&gt; findById(int id);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this inherited method finds all files in the filelibrary
+&nbsp;     *
+&nbsp;     */
+&nbsp;    List&lt;FileLibrary&gt; findAll();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this inherited method saves files to the database
+&nbsp;     * @param file
+&nbsp;     * @return
+&nbsp;     */
+&nbsp;    FileLibrary save(FileLibrary file);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this inherited method deletes file by id
+&nbsp;     * @param id
+&nbsp;     */
+&nbsp;    // @Query(&quot;SELECT f from FileLibrary f WHERE f.fileName = ?1&quot;)
+&nbsp;    @Transactional
+&nbsp;    void deleteById(int id);
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-12-04 23:37</div>
+</div>
+</body>
+</html>

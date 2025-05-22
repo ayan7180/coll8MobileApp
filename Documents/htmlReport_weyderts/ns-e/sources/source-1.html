@@ -1,0 +1,207 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > Profile</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">backend.Profile</a>
+</div>
+
+<h1>Coverage Summary for Class: Profile (backend.Profile)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Profile</td>
+<td class="coverageStat">
+  <span class="percent">
+    11.1%
+  </span>
+  <span class="absValue">
+    (1/9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    7.7%
+  </span>
+  <span class="absValue">
+    (1/13)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">Profile$HibernateInstantiator$gkwZt5Fn</td>
+  </tr>
+  <tr>
+    <td class="name">Profile$HibernateProxy$sSuDwhQN</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    11.1%
+  </span>
+  <span class="absValue">
+    (1/9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    7.7%
+  </span>
+  <span class="absValue">
+    (1/13)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package backend.Profile;
+&nbsp;
+&nbsp;import io.swagger.v3.oas.annotations.tags.Tag;
+&nbsp;import jakarta.persistence.*;
+&nbsp;import com.fasterxml.jackson.annotation.JsonIgnore;
+&nbsp;import backend.Users.User;
+&nbsp;//IDEA: maybe import users from our database and just use what we have and add a few extra fields but mainly reference Users
+&nbsp;
+&nbsp;/**
+&nbsp; * @author Soma Germano
+&nbsp; * this class handles the construction of an instance of a profile object
+&nbsp; */
+&nbsp;@Entity
+&nbsp;@Table(name=&quot;profile&quot;)
+&nbsp;public class Profile {
+&nbsp;    //private fields
+&nbsp;    @Id
+&nbsp;    @GeneratedValue(strategy = GenerationType.AUTO)
+&nbsp;    private int id;
+&nbsp;    private String name;
+&nbsp;    private String email;
+&nbsp;    private String profileImage;
+&nbsp;
+&nbsp;    @OneToOne
+&nbsp;    @JsonIgnore
+&nbsp;    private User user;
+&nbsp;
+&nbsp;    //constructor(s)
+&nbsp;
+&nbsp;    /**
+&nbsp;     * constructor to create a new instance of a profile object
+&nbsp;     * @param user
+&nbsp;     */
+<b class="nc">&nbsp;    public Profile(User user){</b>
+<b class="nc">&nbsp;        this.name = user.getUsername();</b>
+<b class="nc">&nbsp;        this.email = user.getEmailId();</b>
+<b class="nc">&nbsp;        this.profileImage = user.getProfileImage();</b>
+<b class="nc">&nbsp;        this.id = user.getId();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * default constructor
+&nbsp;     */
+<b class="fc">&nbsp;    public Profile(){}</b>
+&nbsp;    //getters + setters -
+&nbsp;
+&nbsp;    /**
+&nbsp;     * retrieves a profile&#39;s id
+&nbsp;     * @return
+&nbsp;     */
+<b class="nc">&nbsp;    public int getProfileId() { return id; }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * updates a profile&#39;s id
+&nbsp;     * @param profileId
+&nbsp;     */
+<b class="nc">&nbsp;    public void setProfileId(int profileId) {this.id = profileId;  }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * retrieves a profile&#39;s email
+&nbsp;     * @return
+&nbsp;     */
+<b class="nc">&nbsp;    public String getEmail(){ return email; }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * updates a user&#39;s email
+&nbsp;     * @param user
+&nbsp;     */
+<b class="nc">&nbsp;    public void setEmail(User user){ this.email = user.getEmailId();}</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * retrieves a profile&#39;s user
+&nbsp;     * @return
+&nbsp;     */
+<b class="nc">&nbsp;    public User getUser(){ return user; }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * updates a profile&#39;s user
+&nbsp;     * @param user
+&nbsp;     */
+<b class="nc">&nbsp;    public void setUser(User user){ this.user = user; }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * updates a profile&#39;s image file name
+&nbsp;     * @param profileImage
+&nbsp;     */
+&nbsp;    public void setProfileImage(String profileImage) {
+<b class="nc">&nbsp;        this.profileImage = profileImage;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-12-04 23:37</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,312 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > Course</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">backend.Courses</a>
+</div>
+
+<h1>Coverage Summary for Class: Course (backend.Courses)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Course</td>
+<td class="coverageStat">
+  <span class="percent">
+    58.3%
+  </span>
+  <span class="absValue">
+    (14/24)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    41.9%
+  </span>
+  <span class="absValue">
+    (18/43)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">Course$HibernateInstantiator$9RHoUF66</td>
+  </tr>
+  <tr>
+    <td class="name">Course$HibernateProxy$tlAqrZO9</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    58.3%
+  </span>
+  <span class="absValue">
+    (14/24)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    41.9%
+  </span>
+  <span class="absValue">
+    (18/43)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package backend.Courses;
+&nbsp;
+&nbsp;import backend.Announcements.Announcement;
+&nbsp;import backend.Files.SysFile;
+&nbsp;import backend.Majors.Major;
+&nbsp;import backend.Users.User;
+&nbsp;import com.fasterxml.jackson.annotation.JsonIgnore;
+&nbsp;import jakarta.persistence.*;
+&nbsp;import jakarta.transaction.Transactional;
+&nbsp;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;// TODO Ask professor how to drop mass-duplicate tables
+&nbsp;// TODO Find out how to do an if-exists to find existing tables and either use them or drop them
+&nbsp;
+&nbsp;@Entity
+&nbsp;public class Course {
+&nbsp;
+&nbsp;    //////// Private Fields ////////
+&nbsp;
+&nbsp;    // TODO NOTE: Find a better way to prototype making big changes to tables, like changing its id
+&nbsp;
+&nbsp;    @Id
+&nbsp;    @GeneratedValue(strategy = GenerationType.IDENTITY)
+&nbsp;    private int id;
+&nbsp;    private int courseNum;
+&nbsp;    private String title;
+&nbsp;
+&nbsp;    @ManyToOne  // DONT USE: (cascade = CascadeType.ALL), it will delete a major whenever you delete a single class, which is undesireable.
+&nbsp;    // TODO Is a join column necessary here?
+&nbsp;    @JoinColumn(name = &quot;majorAbbreviation&quot;)
+&nbsp;    private Major major;
+&nbsp;
+&nbsp;    @OneToMany(cascade = CascadeType.ALL)
+&nbsp;    @JsonIgnore
+&nbsp;    private List&lt;SysFile&gt; files;
+&nbsp;
+&nbsp;//    // TODO make many-to-many
+&nbsp;//    @ManyToOne
+&nbsp;//    @JoinColumn(name = &quot;userID&quot;)
+&nbsp;//    private User user;
+&nbsp;
+&nbsp;    // TODO Make methods, verify functionality as a many-to-many relationship
+&nbsp;    // Members
+&nbsp;    @ManyToMany(mappedBy = &quot;courses&quot;)
+&nbsp;    @JsonIgnore
+&nbsp;    private Set&lt;User&gt; users;
+&nbsp;
+&nbsp;    // Owners
+&nbsp;    @ManyToMany(mappedBy = &quot;ownedCourses&quot;)
+&nbsp;    @JsonIgnore
+&nbsp;    private Set&lt;User&gt; owners;
+&nbsp;
+&nbsp;    // TODO make a way to add announcements to a course
+&nbsp;    @OneToMany(cascade = CascadeType.PERSIST)
+&nbsp;    @JsonIgnore
+&nbsp;    private Set&lt;Announcement&gt; announcements;
+&nbsp;
+&nbsp;    //////// Constructors ////////
+&nbsp;
+&nbsp;//    public Course(int courseNum){
+&nbsp;//        this.courseNum = courseNum;
+&nbsp;//    }
+&nbsp;
+&nbsp;//    public Course(int courseNum, String title, Major major){
+&nbsp;//        this.courseNum = courseNum;
+&nbsp;//        this.title = title;
+&nbsp;//        this.major = major;
+&nbsp;//        this.files = new ArrayList&lt;&gt;();
+&nbsp;//        this.announcements = new HashSet&lt;&gt;();
+&nbsp;//    }
+&nbsp;
+&nbsp;//    public Course(Integer courseNum){
+&nbsp;//        this.courseNum = courseNum.intValue();
+&nbsp;//    }
+&nbsp;
+<b class="fc">&nbsp;    public Course(){</b>
+<b class="fc">&nbsp;        this.announcements = new HashSet&lt;&gt;();</b>
+<b class="fc">&nbsp;        this.files = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        this.owners = new HashSet&lt;&gt;();</b>
+<b class="fc">&nbsp;        this.users = new HashSet&lt;&gt;();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //////// Getters/Setters ////////
+&nbsp;
+&nbsp;    public int getCourseNum(){
+<b class="fc">&nbsp;        return courseNum;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setCourseNum(int courseNum){
+<b class="fc">&nbsp;        this.courseNum = courseNum;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setMajor(Major major){
+<b class="fc">&nbsp;        this.major = major;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Major getMajor(){
+<b class="fc">&nbsp;        return major;</b>
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    public void setTitle(String title) { this.title = title; }</b>
+&nbsp;
+<b class="fc">&nbsp;    public String getTitle() { return title; }</b>
+&nbsp;
+&nbsp;    public void addSysFile(SysFile sysFile){
+<b class="nc">&nbsp;        files.add(sysFile);</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    public void removeFile(SysFile sysFile) { files.remove(sysFile); }</b>
+&nbsp;
+&nbsp;    public int getId(){
+<b class="fc">&nbsp;        return this.id;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public List&lt;SysFile&gt; getFiles(){
+<b class="fc">&nbsp;        return this.files;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Announcement[] getRecentAnnouncements(int numElements) {
+<b class="nc">&nbsp;        Announcement[] annArr = new Announcement[numElements];</b>
+<b class="nc">&nbsp;        ArrayList&lt;Announcement&gt; annList = new ArrayList&lt;&gt;(announcements);</b>
+<b class="nc">&nbsp;        Collections.sort(annList);</b>
+<b class="nc">&nbsp;        for(int i = 0; i &lt; numElements; i++){</b>
+<b class="nc">&nbsp;            if(i &lt; annList.size()){</b>
+<b class="nc">&nbsp;                annArr[i] = annList.get(i);</b>
+&nbsp;            }
+&nbsp;            else{
+<b class="nc">&nbsp;                annArr[i] = null;</b>
+&nbsp;            }
+&nbsp;        }
+<b class="nc">&nbsp;        return annArr;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public SysFile[] getRecentFiles(int numElements) {
+<b class="nc">&nbsp;        SysFile[] sysArr = new SysFile[numElements];</b>
+<b class="nc">&nbsp;        ArrayList&lt;SysFile&gt; sysList = new ArrayList&lt;&gt;(files);</b>
+<b class="nc">&nbsp;        Collections.sort(sysList);</b>
+<b class="nc">&nbsp;        for(int i = 0; i &lt; numElements; i++){</b>
+<b class="nc">&nbsp;            if(i &lt; sysList.size()){</b>
+<b class="nc">&nbsp;                sysArr[i] = sysList.get(i);</b>
+&nbsp;            }
+&nbsp;            else{
+<b class="nc">&nbsp;                sysArr[i] = null;</b>
+&nbsp;            }
+&nbsp;        }
+<b class="nc">&nbsp;        return sysArr;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Set&lt;Announcement&gt; getAnnouncements() {
+<b class="fc">&nbsp;        return announcements;</b>
+&nbsp;    }
+&nbsp;    public void setAnnouncements(Set&lt;Announcement&gt; announcements) {
+<b class="nc">&nbsp;        this.announcements = announcements;</b>
+&nbsp;    }
+&nbsp;    public void addAnnouncement(Announcement announcement){
+<b class="nc">&nbsp;        this.announcements.add(announcement);</b>
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    public Set&lt;User&gt; getUsers() { return users; }</b>
+<b class="nc">&nbsp;    public void setUsers (Set&lt;User&gt; users) { this.users = users; }</b>
+<b class="fc">&nbsp;    public void addUser(User user) { users.add(user); }</b>
+<b class="nc">&nbsp;    public void removeUser(User user) { users.remove(user); }</b>
+&nbsp;
+<b class="fc">&nbsp;    public Set&lt;User&gt; getOwners() { return owners; }</b>
+<b class="nc">&nbsp;    public void setOwners (Set&lt;User&gt; owners) { this.owners = owners; }</b>
+<b class="fc">&nbsp;    public void addOwner(User owner) { owners.add(owner); }</b>
+&nbsp;    @Transactional
+&nbsp;    public void removeOwner(User owner) {
+<b class="nc">&nbsp;        users.remove(owner);</b>
+<b class="nc">&nbsp;        owner.getCourses().remove(this);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-12-04 23:37</div>
+</div>
+</body>
+</html>

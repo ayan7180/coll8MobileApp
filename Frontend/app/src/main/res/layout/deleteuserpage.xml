@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageButton
+        android:id="@+id/homeButton"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_gravity="start|top"
+        android:backgroundTint="@color/white"
+        app:srcCompat="@drawable/homeimg_btn" />
+
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="160dp"
+        android:src="@drawable/coll8_logo"
+        android:layout_marginTop="30dp">
+    </ImageView>
+
+    <EditText
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        android:layout_marginLeft="-300dp"
+        android:hint="Username"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        android:textSize="20sp"
+        android:background="@drawable/clear_rounded_corner"
+        android:padding="18dp"
+        android:inputType="text"
+        android:id="@+id/username_input"/>
+
+    <EditText
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="300dp"
+        android:layout_marginLeft="-300dp"
+        android:hint="Password"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        android:textSize="20sp"
+        android:background="@drawable/clear_rounded_corner"
+        android:padding="18dp"
+        android:inputType="text"
+        android:id="@+id/password_input"/>
+
+    <Button
+        android:id="@+id/deleteUserButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="500dp"
+        android:layout_marginLeft="-190dp"
+        android:text="Delete User"
+        android:textColor="@color/yellow"
+        android:backgroundTint="@color/red"/>
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="600dp"
+        android:layout_marginLeft="-95dp"
+        android:text="Back"
+        android:textColor="@color/yellow"
+        android:backgroundTint="@color/red"/>
+
+
+</LinearLayout>

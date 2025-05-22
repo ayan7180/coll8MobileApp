@@ -1,0 +1,462 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > AnnotationServer</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">backend.Annotations</a>
+</div>
+
+<h1>Coverage Summary for Class: AnnotationServer (backend.Annotations)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AnnotationServer</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    25%
+  </span>
+  <span class="absValue">
+    (5/20)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/30)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    6.3%
+  </span>
+  <span class="absValue">
+    (8/127)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package backend.Annotations;
+&nbsp;
+&nbsp;import backend.Files.SysFile;
+&nbsp;import backend.Files.SysFileRepository;
+&nbsp;import backend.Users.User;
+&nbsp;import backend.Users.UserRepository;
+&nbsp;import com.fasterxml.jackson.core.type.TypeReference;
+&nbsp;import com.fasterxml.jackson.databind.JsonNode;
+&nbsp;import com.fasterxml.jackson.databind.ObjectMapper;
+&nbsp;import com.fasterxml.jackson.databind.ObjectReader;
+&nbsp;import com.fasterxml.jackson.databind.node.ArrayNode;
+&nbsp;import com.fasterxml.jackson.databind.node.ObjectNode;
+&nbsp;import jakarta.websocket.*;
+&nbsp;import jakarta.websocket.server.PathParam;
+&nbsp;import jakarta.websocket.server.ServerEndpoint;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.boot.jackson.JsonObjectDeserializer;
+&nbsp;import org.springframework.stereotype.Controller;
+&nbsp;
+&nbsp;import java.io.IOException;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;import org.slf4j.Logger;
+&nbsp;import org.slf4j.LoggerFactory;
+&nbsp;
+&nbsp;// TODO Kill common exceptions
+&nbsp;
+&nbsp;@ServerEndpoint(value = &quot;/fileView/{username}/{fileID}&quot;)
+&nbsp;@Controller      // this is needed for this to be an endpoint to springboot
+<b class="fc">&nbsp;public class AnnotationServer {</b>
+&nbsp;
+&nbsp;    // cannot autowire static directly (instead we do it by the below
+&nbsp;    // method
+&nbsp;    private static AnnotationRepository annotationRepository;
+&nbsp;    private static SysFileRepository sysFileRepo;
+&nbsp;    private static UserRepository userRepo;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    public void setAnnotationRepository(AnnotationRepository repo) {
+<b class="fc">&nbsp;        annotationRepository = repo;  // we are setting the static variable</b>
+&nbsp;    }
+&nbsp;    @Autowired
+&nbsp;    public void setFileRepository(SysFileRepository repo) {
+<b class="fc">&nbsp;        sysFileRepo = repo;</b>
+&nbsp;    }
+&nbsp;    @Autowired
+&nbsp;    public void setUserRepository(UserRepository repo){
+<b class="fc">&nbsp;        userRepo = repo;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // Store all socket session and their corresponding username.
+<b class="fc">&nbsp;    private static Map&lt;Session, User&gt; sessionUserMap = new Hashtable&lt;&gt;();</b>
+<b class="fc">&nbsp;    private static Map&lt;User, Session&gt; userSessionMap = new Hashtable&lt;&gt;();</b>
+<b class="fc">&nbsp;    private static Map&lt;Session, SysFile&gt; sessionFileMap = new Hashtable&lt;&gt;();</b>
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;    private final Logger logger = LoggerFactory.getLogger(AnnotationServer.class);</b>
+&nbsp;
+&nbsp;    @OnOpen
+&nbsp;    public void onOpen(Session session,
+&nbsp;                       @PathParam(&quot;username&quot;) String username,
+&nbsp;                       @PathParam(&quot;fileID&quot;) int fileID)
+&nbsp;            throws IOException {
+&nbsp;
+<b class="nc">&nbsp;        logger.info(&quot;Entered into Open&quot;);</b>
+&nbsp;
+&nbsp;        // Authenticity Checks // TODO Make sure this kills the connection
+<b class="nc">&nbsp;        if(sysFileRepo.findById(fileID).isEmpty()){</b>
+&nbsp;            //throw new IOException(&quot;Couldn&#39;t find file&quot;);
+<b class="nc">&nbsp;            sendMessageToSession(&quot;Couldn&#39;t find file&quot;, session);</b>
+&nbsp;            return;
+&nbsp;        }
+<b class="nc">&nbsp;        SysFile parentFile = sysFileRepo.findById(fileID).get();</b>
+<b class="nc">&nbsp;        if(userRepo.findByUsername(username).isEmpty()){</b>
+&nbsp;            //throw new IOException(&quot;Couldn&#39;t find username&quot;);
+<b class="nc">&nbsp;            sendMessageToSession(&quot;Couldn&#39;t find file&quot;, session);</b>
+&nbsp;            return;
+&nbsp;        }
+<b class="nc">&nbsp;        User user = userRepo.findByUsername(username).get();</b>
+&nbsp;
+&nbsp;        // store connecting user information
+<b class="nc">&nbsp;        sessionUserMap.put(session, user);</b>
+<b class="nc">&nbsp;        userSessionMap.put(user, session);</b>
+<b class="nc">&nbsp;        sessionFileMap.put(session, parentFile);</b>
+&nbsp;
+&nbsp;        //Send file annotations to connected User
+<b class="nc">&nbsp;        sendAllAnnotationsToUser(session);</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * int startChar, int endChar, String text,
+&nbsp;     *                                     Set&lt;Integer&gt; fileReferenceIDs
+&nbsp;     * @param session
+&nbsp;     * @param jsonString
+&nbsp;     * Layout for &quot;text_create&quot; operation:
+&nbsp;     *{
+&nbsp;     *     &quot;command&quot;: &quot;text_create&quot;,
+&nbsp;     *     &quot;startChar&quot;: int,
+&nbsp;     *     &quot;endChar&quot;: int,
+&nbsp;     *     &quot;text&quot;: String,
+&nbsp;     *     &quot;fileReferenceIDs&quot;: [
+&nbsp;     *         int,
+&nbsp;     *         int,
+&nbsp;     *         ...
+&nbsp;     *     ],
+&nbsp;     *     &quot;isChild&quot;: boolean,
+&nbsp;     *     &quot;parentAnnotationID&quot;: int
+&nbsp;     * }
+&nbsp;     * Layout for &quot;video_create&quot; operation:
+&nbsp;     * {
+&nbsp;     *     &quot;command&quot;: &quot;video_create&quot;,
+&nbsp;     *     &quot;startTime&quot;: double,
+&nbsp;     *     &quot;endTime&quot;: double,
+&nbsp;     *     &quot;text&quot;: String,
+&nbsp;     *     &quot;fileReferenceIDs&quot;: [
+&nbsp;     *          int,
+&nbsp;     *          int,
+&nbsp;     *          ...
+&nbsp;     *     ]
+&nbsp;     *     &quot;isChild&quot;: boolean,
+&nbsp;     *     &quot;parentAnnotationID&quot;: int
+&nbsp;     * }
+&nbsp;     * Layout for &quot;delete&quot; operation:
+&nbsp;     * {
+&nbsp;     *     &quot;command&quot;: &quot;delete&quot;,
+&nbsp;     *     &quot;id&quot;: int
+&nbsp;     * }
+&nbsp;     * @throws IOException
+&nbsp;     */
+&nbsp;    @OnMessage
+&nbsp;    public void onMessage(Session session, String jsonString) throws IOException {
+&nbsp;
+<b class="nc">&nbsp;        ObjectMapper objectMapper = new ObjectMapper();</b>
+<b class="nc">&nbsp;        JsonNode json = objectMapper.readTree(jsonString);</b>
+<b class="nc">&nbsp;        String command = json.get(&quot;command&quot;).asText();</b>
+&nbsp;
+<b class="nc">&nbsp;        if(command.equals(&quot;text_create&quot;)){</b>
+<b class="nc">&nbsp;            onNewTextAnnotation(session, json);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        else if(command.equals(&quot;video_create&quot;)){</b>
+<b class="nc">&nbsp;            onNewVideoAnnotation(session, json);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        else if(command.equals(&quot;delete&quot;)) {</b>
+<b class="nc">&nbsp;            onDeleteAnnotation(session, json);</b>
+&nbsp;        }
+&nbsp;        // TODO put
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    private void onNewVideoAnnotation(Session session, JsonNode json){
+<b class="nc">&nbsp;        double startTime = json.get(&quot;startChar&quot;).asDouble();</b>
+<b class="nc">&nbsp;        double endTime = json.get(&quot;endChar&quot;).asDouble();</b>
+<b class="nc">&nbsp;        String text = json.get(&quot;text&quot;).asText();</b>
+<b class="nc">&nbsp;        ArrayNode jsonFileIDs = (ArrayNode)json.get(&quot;fileReferenceIDs&quot;);</b>
+<b class="nc">&nbsp;        boolean isChild = json.get(&quot;isChild&quot;).asBoolean();</b>
+<b class="nc">&nbsp;        int parentAnnotationID = json.get(&quot;parentAnnotationID&quot;).asInt();</b>
+&nbsp;
+<b class="nc">&nbsp;        User user = sessionUserMap.get(session);</b>
+<b class="nc">&nbsp;        SysFile file = sessionFileMap.get(session);</b>
+<b class="nc">&nbsp;        logger.info(&quot;Making new annotation from user: &quot; + user.getUsername());</b>
+&nbsp;
+<b class="nc">&nbsp;        Set&lt;SysFile&gt; references = new HashSet&lt;&gt;();</b>
+&nbsp;
+&nbsp;        // Populate the references set from the ID set
+<b class="nc">&nbsp;        for (Iterator&lt;JsonNode&gt; it = jsonFileIDs.elements(); it.hasNext(); ) {</b>
+<b class="nc">&nbsp;            JsonNode nextJsonID = it.next();</b>
+<b class="nc">&nbsp;            int nextFileID = nextJsonID.asInt();</b>
+<b class="nc">&nbsp;            if (sysFileRepo.findById(nextFileID).isEmpty()) {</b>
+&nbsp;                //throw new IOException(&quot;Could not find reference file by ID &quot; + nextFileID);
+<b class="nc">&nbsp;                String message = &quot;Could not find reference file by ID &quot; + nextFileID;</b>
+<b class="nc">&nbsp;                sendMessageToSession(message, session);</b>
+&nbsp;                return;
+&nbsp;            }
+<b class="nc">&nbsp;            SysFile nextFile = sysFileRepo.findById(nextFileID).get();</b>
+<b class="nc">&nbsp;            references.add(nextFile);</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        Annotation parentAnnotation = null;</b>
+<b class="nc">&nbsp;        if(isChild){</b>
+<b class="nc">&nbsp;            parentAnnotation = annotationRepository.findById(parentAnnotationID).get();</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        Annotation newAnnotation = new VideoAnnotation(startTime, endTime, text, references, file, parentAnnotation);</b>
+<b class="nc">&nbsp;        annotationRepository.save(newAnnotation);</b>
+&nbsp;
+<b class="nc">&nbsp;        broadcastAnnotation(newAnnotation);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Deletes an annotation.
+&nbsp;     * @param session The current session
+&nbsp;     * @param json The json with the id of the annotation to be deleted
+&nbsp;     * @throws IOException
+&nbsp;     */
+&nbsp;    private void onDeleteAnnotation(Session session, JsonNode json) throws IOException {
+<b class="nc">&nbsp;        int id = json.get(&quot;id&quot;).asInt();</b>
+<b class="nc">&nbsp;        annotationRepository.deleteById(id);</b>
+&nbsp;
+<b class="nc">&nbsp;        User user = sessionUserMap.get(session);</b>
+<b class="nc">&nbsp;        String message = &quot;Delete annotation &quot; + id + &quot; by user &quot; + user.getUsername();</b>
+<b class="nc">&nbsp;        logger.info(message);</b>
+<b class="nc">&nbsp;        broadcastMessage(message);</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    private void onNewTextAnnotation(Session session, JsonNode json) throws IOException {
+<b class="nc">&nbsp;        int startChar = json.get(&quot;startChar&quot;).asInt();</b>
+<b class="nc">&nbsp;        int endChar = json.get(&quot;endChar&quot;).asInt();</b>
+<b class="nc">&nbsp;        String text = json.get(&quot;text&quot;).asText();</b>
+<b class="nc">&nbsp;        ArrayNode jsonFileIDs = (ArrayNode)json.get(&quot;fileReferenceIDs&quot;);</b>
+<b class="nc">&nbsp;        boolean isChild = json.get(&quot;isChild&quot;).asBoolean();</b>
+<b class="nc">&nbsp;        int parentAnnotationID = json.get(&quot;parentAnnotationID&quot;).asInt();</b>
+&nbsp;
+<b class="nc">&nbsp;        User user = sessionUserMap.get(session);</b>
+<b class="nc">&nbsp;        SysFile file = sessionFileMap.get(session);</b>
+<b class="nc">&nbsp;        logger.info(&quot;Making new annotation from user: &quot; + user.getUsername());</b>
+&nbsp;
+<b class="nc">&nbsp;        Set&lt;SysFile&gt; references = new HashSet&lt;&gt;();</b>
+&nbsp;
+&nbsp;        // Populate the references set from the ID set
+<b class="nc">&nbsp;        for (Iterator&lt;JsonNode&gt; it = jsonFileIDs.elements(); it.hasNext(); ) {</b>
+<b class="nc">&nbsp;            JsonNode nextJsonID = it.next();</b>
+<b class="nc">&nbsp;            int nextFileID = nextJsonID.asInt();</b>
+<b class="nc">&nbsp;            if (sysFileRepo.findById(nextFileID).isEmpty()) {</b>
+&nbsp;                //throw new IOException(&quot;Could not find reference file by ID &quot; + nextFileID);
+<b class="nc">&nbsp;                String message = &quot;Could not find reference file by ID &quot; + nextFileID;</b>
+<b class="nc">&nbsp;                sendMessageToSession(message, session);</b>
+&nbsp;                return;
+&nbsp;            }
+<b class="nc">&nbsp;            SysFile nextFile = sysFileRepo.findById(nextFileID).get();</b>
+<b class="nc">&nbsp;            references.add(nextFile);</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        Annotation parentAnnotation = null;</b>
+<b class="nc">&nbsp;        if(isChild){</b>
+<b class="nc">&nbsp;            parentAnnotation = annotationRepository.findById(parentAnnotationID).get();</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        Annotation newAnnotation = new TextAnnotation(startChar, endChar, text, references, file, parentAnnotation);</b>
+<b class="nc">&nbsp;        annotationRepository.save(newAnnotation);</b>
+&nbsp;
+<b class="nc">&nbsp;        broadcastAnnotation(newAnnotation);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @OnClose
+&nbsp;    public void onClose(Session session) throws IOException {
+<b class="nc">&nbsp;        logger.info(&quot;Entered into Close&quot;);</b>
+&nbsp;
+&nbsp;        // remove the user connection information
+<b class="nc">&nbsp;        User user = sessionUserMap.get(session);</b>
+<b class="nc">&nbsp;        sessionUserMap.remove(session);</b>
+<b class="nc">&nbsp;        userSessionMap.remove(user);</b>
+&nbsp;
+<b class="nc">&nbsp;        SysFile file = sessionFileMap.get(session);</b>
+<b class="nc">&nbsp;        sessionFileMap.remove(session);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    // TODO add more errors?
+&nbsp;    @OnError
+&nbsp;    public void onError(Session session, Throwable throwable) {
+&nbsp;        // Do error handling here
+<b class="nc">&nbsp;        logger.info(&quot;Entered into Error&quot;);</b>
+<b class="nc">&nbsp;        throwable.printStackTrace();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // TODO Broadcast new/changed annotation
+&nbsp;
+&nbsp;    // TODO
+&nbsp;    private void sendAllAnnotationsToUser(Session session){
+<b class="nc">&nbsp;        User user = sessionUserMap.get(session);</b>
+<b class="nc">&nbsp;        SysFile file = sessionFileMap.get(session);</b>
+<b class="nc">&nbsp;        List&lt;Annotation&gt; annotations = annotationRepository.findAllByFile(file);</b>
+&nbsp;        try {
+<b class="nc">&nbsp;            for (Annotation annotation : annotations) {</b>
+<b class="nc">&nbsp;                sendAnnotationToUser(user, annotation);</b>
+&nbsp;            }
+<b class="nc">&nbsp;        } catch (Exception e) {</b>
+&nbsp;            // TODO
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    private void sendAnnotationToUser(User user, Annotation annotation) {
+&nbsp;        try{
+<b class="nc">&nbsp;            String jsonString = annotationToJsonString(annotation);</b>
+<b class="nc">&nbsp;            userSessionMap.get(user).getBasicRemote().sendText(jsonString);</b>
+<b class="nc">&nbsp;        } catch(Exception e){</b>
+&nbsp;            //throw new Exception(&quot;Failed to send object&quot;);
+<b class="nc">&nbsp;            String message = &quot;Failed to send object&quot;;</b>
+<b class="nc">&nbsp;            sendMessageToSession(message, userSessionMap.get(user));</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    private void sendMessageToSession(String message, Session session){
+<b class="nc">&nbsp;        try{ session.getBasicRemote().sendText(message); }</b>
+<b class="nc">&nbsp;        catch(Exception e) {} // TODO</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void broadcastMessage(String message) {
+<b class="nc">&nbsp;        userSessionMap.forEach( (user, session)-&gt;{</b>
+<b class="nc">&nbsp;            try{ userSessionMap.get(user).getBasicRemote().sendText(message); }</b>
+<b class="nc">&nbsp;            catch(Exception e) {} // TODO</b>
+&nbsp;        });
+&nbsp;    }
+&nbsp;
+&nbsp;    private void broadcastAnnotation(Annotation annotation) {
+&nbsp;
+<b class="nc">&nbsp;        userSessionMap.forEach( (user, session)-&gt;{</b>
+<b class="nc">&nbsp;            try { sendAnnotationToUser(user, annotation); }</b>
+<b class="nc">&nbsp;            catch(Exception e) { } //TODO</b>
+&nbsp;        });
+&nbsp;    }
+&nbsp;
+&nbsp;    private String annotationToJsonString(Annotation annotation) {
+<b class="nc">&nbsp;        String returnString = &quot;&quot;;</b>
+&nbsp;
+&nbsp;        try {
+<b class="nc">&nbsp;            ObjectMapper objectMapper = new ObjectMapper();</b>
+<b class="nc">&nbsp;            ObjectNode newJson = objectMapper.createObjectNode(); // objectMapper.readTree( objectMapper.writeValueAsString(annotation) );</b>
+<b class="nc">&nbsp;            JsonNode baseJson = objectMapper.readTree(objectMapper.writeValueAsString(annotation));</b>
+<b class="nc">&nbsp;            Iterator&lt;String&gt; it = baseJson.fieldNames();</b>
+<b class="nc">&nbsp;            while (it.hasNext()) {</b>
+<b class="nc">&nbsp;                String name = it.next();</b>
+<b class="nc">&nbsp;                newJson.put(name, baseJson.get(name));</b>
+&nbsp;            }
+&nbsp;
+<b class="nc">&nbsp;            SysFile file = annotation.getParentFile();</b>
+<b class="nc">&nbsp;            if (file != null) {</b>
+<b class="nc">&nbsp;                newJson.put(&quot;parentFileID&quot;, annotation.getParentFile().getId());</b>
+&nbsp;            }
+<b class="nc">&nbsp;            Annotation parentAnnotation = annotation.getParentAnnotation();</b>
+<b class="nc">&nbsp;            if (parentAnnotation != null) {</b>
+<b class="nc">&nbsp;                newJson.put(&quot;parentAnnotationID&quot;, annotation.getParentAnnotation().getId());</b>
+&nbsp;            }
+<b class="nc">&nbsp;            returnString = newJson.toString();</b>
+<b class="nc">&nbsp;        } catch (Exception e){</b>
+<b class="nc">&nbsp;            returnString = &quot;Annotation to JSON conversion failure.&quot;;</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        return returnString;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-12-04 23:37</div>
+</div>
+</body>
+</html>

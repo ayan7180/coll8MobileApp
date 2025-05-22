@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+
+
+    <application
+        android:allowBackup="true"
+        android:usesCleartextTraffic="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Home_page"
+        tools:targetApi="31">
+        <activity
+            android:name=".mainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Home_page">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".loginAcivity"
+            android:exported="false" />
+        <activity
+            android:name=".SignUpActivity"
+            android:exported="true" />
+        <activity
+            android:name=".home_classes"
+            android:exported="true"/>
+
+        <activity android:name=".announceDetailsActivity"
+            android:exported="true"/>
+
+        <activity android:name=".createAnnounceActivity"
+            android:exported="true"/>
+
+        <activity android:name=".genAnnounceActivity"
+            android:exported="true"/>
+
+        <activity android:name=".createClassActivity"
+            android:exported="true"/>
+
+        <activity android:name=".updateAnnounceActivity"
+            android:exported="true"/>
+
+        <activity android:name=".FindClassActivity"
+
+
+            android:exported="true"/>
+        <activity
+            android:name=".deleteClassActivity"
+            android:exported="true"/>
+        <activity
+            android:name=".settings"
+            android:theme="@style/Theme.Home_page.WithActionBar"
+            android:exported="true"/>
+        <activity
+            android:name=".userPage"
+            android:exported="true"/>
+        <activity
+            android:name=".personalFileRepoActivity"
+            android:exported="true"/>
+        <activity
+            android:name=".classLib"
+            android:exported="true"/>
+        <activity
+            android:name=".mainChatActivity"
+            android:exported="true"/>
+        <activity
+            android:name=".ChatActivity"
+            android:exported="true"/>
+        <activity
+            android:name=".uploadActivity"
+            android:exported="true"/>
+        <activity
+            android:name=".fileRepoActivity"
+            android:exported="true"/>
+        <activity
+            android:name=".annotateDetailsActivity"
+            android:exported="true"/>
+        <activity
+            android:name=".statsActivity"
+            android:exported="true"/>
+        <activity
+            android:name=".classNews"
+            android:exported="true"/>
+        <activity
+            android:name=".classRepoActivity"
+            android:exported="true"/>
+        <activity
+            android:name=".CalendarActivity"
+            android:exported="true"/>
+        <activity
+            android:name=".manageClasses"
+            android:exported="true"/>
+        <activity
+            android:name=".manageUsers"
+            android:exported="true"/>
+        <activity
+            android:name=".classArchiveActivity"
+            android:exported="true"/>
+        <activity
+            android:name=".groupActivity"
+            android:exported="true"/>
+        <activity
+            android:name=".groupCreateActivity"
+            android:exported="true"/>
+        <activity
+            android:name=".mainGroupActivity"
+            android:exported="true">
+
+            
+
+
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+    </application>
+
+</manifest>

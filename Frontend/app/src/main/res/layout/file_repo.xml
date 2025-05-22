@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+android:padding="10dp">
+
+
+
+<ImageButton
+    android:id="@+id/homeButton"
+    android:layout_width="36dp"
+    android:layout_height="36dp"
+    android:layout_gravity="start|top"
+    android:backgroundTint="@color/white"
+    app:srcCompat="@drawable/homeimg_btn" />
+
+<ImageView
+    android:id="@+id/imageView5"
+    android:layout_marginTop="5dp"
+    android:layout_width="match_parent"
+    android:layout_height="116dp"
+    app:srcCompat="@drawable/filerepo" />
+
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginTop="20dp"
+    android:gravity="center">
+    <Button
+        android:id="@+id/allFilesButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="All Files"
+        android:textColor="@android:color/white"
+        app:cornerRadius="0dp"
+        android:backgroundTint="#FFC300" />
+
+</LinearLayout>
+
+<View
+    android:layout_width="match_parent"
+    android:layout_height="2dp"
+    android:background="@android:color/black"
+    android:layout_marginTop="10dp"/>
+
+
+    <LinearLayout
+        android:id="@+id/filesContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="20dp">
+        <!-- Files will be displayed here -->
+    </LinearLayout>
+
+
+</LinearLayout>

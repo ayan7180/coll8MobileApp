@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <ImageButton
+        android:id="@+id/homeButton"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_gravity="start|top"
+        android:backgroundTint="@color/white"
+        app:srcCompat="@drawable/homeimg_btn" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:layout_marginTop="5dp"
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/classnewslogo" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Class News:"
+        android:layout_gravity="center"
+        android:textColor="@color/red"
+        android:layout_marginTop="20dp"
+        android:textSize="30dp"/>
+
+    <TextView
+        android:id="@+id/newsLib"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No News yet..."
+        android:gravity="center"
+        android:layout_marginTop="3dp"
+        android:textSize="20dp"
+        android:textColor="@color/red"/>
+
+</LinearLayout>

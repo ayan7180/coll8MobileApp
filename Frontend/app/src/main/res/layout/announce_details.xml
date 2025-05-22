@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageButton
+        android:id="@+id/homeButton"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_gravity="start|top"
+        android:backgroundTint="@color/white"
+        app:srcCompat="@drawable/homeimg_btn" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="148dp"
+        app:srcCompat="@drawable/announce_details" />
+
+    <TextView
+        android:id="@+id/announce_detailstxt"
+        android:layout_width="match_parent"
+        android:layout_height="416dp"
+        android:padding="10dp"
+        android:text="Details" />
+
+
+    <Button
+        android:id="@+id/delete_announce"
+        android:layout_width="126dp"
+        android:layout_height="35dp"
+        android:text="Delete?"
+        android:textColor="@color/yellow"
+        android:backgroundTint="@color/red"
+        android:layout_gravity="right"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/finish_announcebtn"
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/red"
+            android:text="Got it!"
+            android:layout_marginLeft="3dp"
+            android:textColor="@color/yellow" />
+
+        <Button
+            android:id="@+id/updatebtn"
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/red"
+            android:layout_marginLeft="7dp"
+            android:text="Update Announcement"
+            android:textColor="@color/yellow"/>
+    </LinearLayout>
+
+
+</LinearLayout>

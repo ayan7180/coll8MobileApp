@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    tools:context=".mainActivity"
+
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="HOME"
+        android:layout_marginBottom="20dp"
+        android:textSize="20dp"
+        android:id="@+id/homeB"
+        android:backgroundTint="@color/black"
+        android:textColor="@color/white">
+
+    </Button>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="User page"
+        android:layout_marginLeft="300dp"
+        android:id="@+id/userPageButton"
+        android:backgroundTint="@color/black"
+        android:textColor="@color/white"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/coll8_logo"
+        android:layout_marginTop="45dp">
+
+    </ImageView>
+
+    <TextView
+        android:id="@+id/welcometxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="170dp"
+        android:textSize="20sp"
+        android:text="Welcome!"
+        android:textColor="@color/red">
+
+    </TextView>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="195dp"
+        android:text="Click to View Announcements!"
+        android:id="@+id/clickAnn"
+        android:padding="25dp"
+        android:backgroundTint="@color/red"
+        android:textColor="@color/yellow">
+
+    </Button>
+
+    <TextView
+        android:id="@+id/classes_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="280dp"
+        android:textSize="20sp"
+        android:text="Classes:"
+        android:textColor="@color/red"/>
+
+    <TextView
+        android:id="@+id/classestxt"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-110dp"
+        android:text="No classes listed yet..."
+        android:gravity="center"
+        android:textColor="@color/red"
+        android:layout_below="@+id/viewFiles"/>
+
+    <LinearLayout
+        android:id="@+id/classes_layout"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-110dp"
+        android:orientation="vertical"
+        android:layout_below="@id/classestxt">
+        <!-- Dynamically created classes will be added here -->
+    </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="280dp"
+        android:text="add classes"
+        android:layout_marginLeft="300dp"
+        android:id="@+id/addClasses"
+        android:backgroundTint="@color/red"
+        android:padding="10dp"
+        android:textColor="@color/yellow">
+
+    </Button>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="330dp"
+        android:text="delete classes"
+        android:layout_marginLeft="300dp"
+        android:id="@+id/deleteClasses"
+        android:backgroundTint="@color/red"
+        android:textColor="@color/yellow"
+        android:padding="10dp">
+
+    </Button>
+
+    <Button
+        android:id="@+id/viewFiles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/deleteClasses"
+        android:layout_marginTop="1dp"
+        android:layout_marginLeft="300dp"
+        android:backgroundTint="@color/red"
+        android:text="View all files"
+        android:textColor="@color/yellow" />
+    <Button
+        android:id="@+id/uploadNotes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/viewFiles"
+        android:layout_marginTop="1dp"
+        android:layout_marginLeft="300dp"
+        android:backgroundTint="@color/red"
+        android:text="Upload Notes"
+        android:textColor="@color/yellow" />
+    <Button
+        android:id="@+id/groupsBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/uploadNotes"
+        android:layout_marginTop="1dp"
+        android:layout_marginLeft="300dp"
+        android:backgroundTint="@color/red"
+        android:text="Groupchat"
+        android:textColor="@color/yellow" />
+
+    <Button
+        android:id="@+id/manageUsers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/uploadNotes"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="300dp"
+        android:text="Manage Users"
+        android:textColor="@color/yellow"
+        android:backgroundTint="@color/red"
+        android:visibility="gone" /> <!-- visible to admin only -->
+
+    <Button
+        android:id="@+id/manageClasses"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/manageUsers"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="300dp"
+        android:text="Manage Classes"
+        android:textColor="@color/yellow"
+        android:backgroundTint="@color/red"
+        android:visibility="gone" /> <!-- visible to admin only -->
+
+
+
+</RelativeLayout>

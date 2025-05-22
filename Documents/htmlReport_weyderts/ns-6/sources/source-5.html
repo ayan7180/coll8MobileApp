@@ -1,0 +1,96 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > CourseRepository</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">backend.Courses</a>
+</div>
+
+<h1>Coverage Summary for Class: CourseRepository (backend.Courses)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">CourseRepository</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package backend.Courses;
+&nbsp;
+&nbsp;import backend.Majors.Major;
+&nbsp;import org.springframework.data.jpa.repository.JpaRepository;
+&nbsp;import org.springframework.data.jpa.repository.Modifying;
+&nbsp;import org.springframework.data.jpa.repository.Query;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;public interface CourseRepository extends JpaRepository&lt;Course, Integer&gt; {
+&nbsp;    // TODO How come these methods work for accessing the SQL database without actually overwriting another method ??
+&nbsp;
+&nbsp;    List&lt;Course&gt; findAll();
+&nbsp;
+&nbsp;    @Query(&quot;SELECT c FROM Course c WHERE c.courseNum = ?1 AND c.major = ?2&quot;)
+&nbsp;    Course findByNumAndMajor(int courseNum, Major major);
+&nbsp;
+&nbsp;    @Query(&quot;SELECT c FROM Course c WHERE c.courseNum = ?1 and c.major.abbreviation = ?2&quot;)
+&nbsp;    Course findByNumAndMajor(int courseNum, String abbreviation);
+&nbsp;
+&nbsp;//    @Query(&quot;SELECT * FROM course WHERE courseNum = ?1 AND major_abbreviation = ?2&quot;)
+&nbsp;//    Course findByNumAndAbbr(int courseNum, String major_abbreviation);
+&nbsp;
+&nbsp;//    @Transactional
+&nbsp;//    void deleteById(int id);
+&nbsp;//
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-12-04 23:37</div>
+</div>
+</body>
+</html>

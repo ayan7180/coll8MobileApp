@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <ImageButton
+        android:id="@+id/homeButton"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_gravity="start|top"
+        android:backgroundTint="@color/white"
+        app:srcCompat="@drawable/homeimg_btn" />
+
+    <ImageView
+        android:id="@+id/find_class_img"
+        android:layout_width="match_parent"
+        android:layout_height="147dp"
+        android:layout_marginTop="0dp"
+        android:contentDescription="find class"
+        android:src="@drawable/find_class" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Search ex: CPRE 288"
+        android:textColor="@color/red"
+        android:paddingLeft="5dp"
+        android:layout_marginTop="10dp"/>
+
+    <SearchView
+        android:id="@+id/search_class"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:background="#FDFD96" />
+
+    <TextView
+        android:id="@+id/getClassestxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Looking for classes..."
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/red"/>
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="300dp"
+        android:gravity="center"
+        android:text="Not seeing your class? ;("
+        android:textColor="@color/red"/>
+
+    <Button
+        android:id="@+id/add_classbtn"
+        android:layout_width="200dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="center"
+        android:backgroundTint="@color/red"
+        android:textColor="@color/yellow"
+        android:text="+ Add Class"/>
+
+</LinearLayout>

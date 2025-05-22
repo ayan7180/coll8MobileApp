@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageButton
+        android:id="@+id/homeButton"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:backgroundTint="@color/white"
+        app:srcCompat="@drawable/homeimg_btn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/class_restoration_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="148dp"
+        app:srcCompat="@drawable/class_restoration_logo"
+        app:layout_constraintTop_toBottomOf="@id/homeButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
+
+    <Button
+        android:id="@+id/restoreClassButton"
+        android:layout_width="200dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/class_restoration_logo"
+        android:backgroundTint="@color/red"
+        android:text="Restore Class"
+        android:textColor="@color/yellow"/>
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,6 @@
+backend/Announcements/AnnouncementController.class
+backend/Announcements/Announcement.class
+backend/Users/User.class
+backend/Announcements/AnnouncementRepository.class
+backend/Users/UserRepository.class
+backend/Users/UserController.class

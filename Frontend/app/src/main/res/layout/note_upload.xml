@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <ImageButton
+        android:id="@+id/homeButton"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_gravity="start|top"
+        android:backgroundTint="@color/white"
+        app:srcCompat="@drawable/homeimg_btn" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="match_parent"
+        android:layout_height="116dp"
+        app:srcCompat="@drawable/noteupload" />
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:layout_marginTop="100dp"
+        app:srcCompat="@drawable/file_upload" />
+
+    <TextView
+        android:id="@+id/fileNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No file selected"
+        android:layout_marginTop="8dp"
+        android:textColor="@android:color/black" />
+    <Button
+        android:id="@+id/removeFileButton"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:text="Remove File"
+        android:background="@android:color/darker_gray"
+        android:visibility="gone" />
+
+    <EditText
+        android:id="@+id/fileTitleTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="FileTitle.type"
+        android:layout_marginTop="20dp"
+        android:padding="10dp" />
+
+    <EditText
+        android:id="@+id/courseAbbreviation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Course Abbreviation (e.g., COMS)"
+        android:layout_marginTop="10dp"
+        android:inputType="textCapCharacters"
+        android:padding="10dp" />
+
+    <EditText
+        android:id="@+id/courseNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Course Number (e.g., 309)"
+        android:layout_marginTop="10dp"
+        android:inputType="number"
+        android:padding="10dp" />
+
+    <Button
+        android:id="@+id/uploadButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select File"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="@color/red"
+        android:textColor="@color/yellow"
+        android:layout_gravity="center" />
+
+    <Button
+        android:id="@+id/submitButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="@color/blue"
+        android:textColor="@color/white"
+        android:layout_gravity="center" />
+
+</LinearLayout>

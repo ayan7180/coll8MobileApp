@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Frontend-A</string>
+    <string name="fc_button_text">+ Add Class</string>
+</resources>

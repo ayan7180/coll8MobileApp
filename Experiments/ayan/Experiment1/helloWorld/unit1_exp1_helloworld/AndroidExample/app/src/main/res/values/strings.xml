@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">AndroidExample</string>
+    <item name="second_msg_txt" type="id" />
+</resources>

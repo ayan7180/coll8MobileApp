@@ -1,0 +1,280 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > AnnouncementController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">backend.Announcements</a>
+</div>
+
+<h1>Coverage Summary for Class: AnnouncementController (backend.Announcements)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AnnouncementController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    14.3%
+  </span>
+  <span class="absValue">
+    (1/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    2.8%
+  </span>
+  <span class="absValue">
+    (1/36)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package backend.Announcements;
+&nbsp;
+&nbsp;import backend.Courses.Course;
+&nbsp;import backend.Courses.CourseRepository;
+&nbsp;import com.fasterxml.jackson.databind.JsonNode;
+&nbsp;import io.swagger.v3.oas.annotations.Operation;
+&nbsp;import io.swagger.v3.oas.annotations.media.Content;
+&nbsp;import io.swagger.v3.oas.annotations.media.ExampleObject;
+&nbsp;import io.swagger.v3.oas.annotations.responses.ApiResponse;
+&nbsp;import io.swagger.v3.oas.annotations.responses.ApiResponses;
+&nbsp;import io.swagger.v3.oas.annotations.tags.Tag;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.web.bind.annotation.GetMapping;
+&nbsp;import org.springframework.web.bind.annotation.RestController;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;/**
+&nbsp; * @author Soma Germano
+&nbsp; * This class handles the storage and retreival of
+&nbsp; * our announcements from the database using CRUD operations
+&nbsp; */
+&nbsp;
+&nbsp;@RestController
+&nbsp;@Tag(name = &quot;Announcement Controller&quot;, description = &quot;Handles CRUDL for announcements, which can be site-wide and course-wide.&quot;)
+<b class="fc">&nbsp;public class AnnouncementController {</b>
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    AnnouncementRepository announcementRepository;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    CourseRepository courseRepository;
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Upload an announcement to a course&quot;)
+&nbsp;    @ApiResponses(value = {
+&nbsp;            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;The file that has been found&quot;,
+&nbsp;                    content = {
+&nbsp;                            @Content(mediaType = &quot;application/json&quot;,
+&nbsp;                                    examples = @ExampleObject(value = &quot;{ \&quot;id\&quot;: int }&quot;))
+&nbsp;                    }
+&nbsp;            )
+&nbsp;    })
+&nbsp;    @PostMapping(path = &quot;/announcements/{courseID}&quot;)
+&nbsp;    public Object createAnnouncement_course(
+&nbsp;            @PathVariable int courseID,
+&nbsp;            @RequestBody AnnouncementStubs.New stub
+&nbsp;    ){
+<b class="nc">&nbsp;        Announcement ann = new Announcement();</b>
+<b class="nc">&nbsp;        ann.setTitle(stub.getTitle());</b>
+<b class="nc">&nbsp;        ann.setText(stub.getText());</b>
+&nbsp;
+<b class="nc">&nbsp;        if(courseRepository.findById(courseID).isEmpty()){</b>
+<b class="nc">&nbsp;            return &quot;Couldn&#39;t find course&quot;;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        Course course = courseRepository.findById(courseID).get();</b>
+<b class="nc">&nbsp;        ann.setCourse(course);</b>
+<b class="nc">&nbsp;        course.addAnnouncement(ann);</b>
+&nbsp;
+<b class="nc">&nbsp;        announcementRepository.save(ann);</b>
+<b class="nc">&nbsp;        courseRepository.save(course);</b>
+&nbsp;
+<b class="nc">&nbsp;        return &quot;\&quot;ID\&quot;: &quot; + ann.getId();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //create
+&nbsp;    /*
+&nbsp;      format from front end:
+&nbsp;      String array[] = {&quot;abstract&quot;, &quot;body&quot;}
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * This method takes a string array and creates a new announcement
+&nbsp;     * and saves the new announcement into the repository (database)
+&nbsp;     * The string array should be organized with the first element as the title and the second element as the text
+&nbsp;     * String array[] ={&quot;Exam Prep&quot;,&quot;A new practice exam has been posted on Canvas for the upcoming exam&quot;}
+&nbsp;     * @param a
+&nbsp;     * @return
+&nbsp;     */
+&nbsp;     @PostMapping(path = &quot;/announcements&quot;)
+&nbsp;     public Object createAnnouncement(@RequestBody String[] a) {
+<b class="nc">&nbsp;         Announcement a1 = new Announcement();</b>
+<b class="nc">&nbsp;         if(a.length &gt; 3){</b>
+<b class="nc">&nbsp;              return &quot;size of array too big&quot;;</b>
+&nbsp;          }
+&nbsp;          else{
+<b class="nc">&nbsp;             a1.setTitle(a[0]);</b>
+<b class="nc">&nbsp;             a1.setText(a[1]);</b>
+&nbsp;//             int num = Integer.parseInt(a[2]); //not necessary
+&nbsp;//             a1.setId(num);
+<b class="nc">&nbsp;             announcementRepository.save(a1);</b>
+<b class="nc">&nbsp;             return &quot;success&quot;;</b>
+&nbsp;          }
+&nbsp;          //return &quot;&quot;; //maybe use hashmap instead of directly returning string
+&nbsp;     }
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * This method gets a certain announcement&#39;s text
+&nbsp;     * @param an
+&nbsp;     * @return
+&nbsp;     */
+&nbsp;     @RequestMapping(path = &quot;/announcements&quot;)
+&nbsp;     public String getAnnouncement(@RequestParam String an[]) {
+<b class="nc">&nbsp;         Announcement a1 = new Announcement();</b>
+<b class="nc">&nbsp;         a1.setTitle(an[0]);</b>
+<b class="nc">&nbsp;         a1.setText(an[1]);</b>
+<b class="nc">&nbsp;         return a1.getText();</b>
+&nbsp;        // Optional&lt;Announcement&gt; a = announcementRepository.findByTitle(an.text);
+&nbsp;     }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * This method updates a specific announcement
+&nbsp;     * It takes id parameter and searches for the announcement in the repository by the given id
+&nbsp;     * If the instance exists, it takes the second parameter newText and updates the instances text field
+&nbsp;     * @param id
+&nbsp;     * @param newText
+&nbsp;     * @return
+&nbsp;     */
+&nbsp;     @PutMapping(path = &quot;/announcements/{id}&quot;)
+&nbsp;    public String updateAnnouncement(@PathVariable int id, @RequestBody String newText) {
+<b class="nc">&nbsp;      Optional&lt;Announcement&gt; existingAn = announcementRepository.findById(id);</b>
+<b class="nc">&nbsp;      if(existingAn.isPresent()){</b>
+<b class="nc">&nbsp;          Announcement an1 = existingAn.get();</b>
+&nbsp;          //change text to announcement
+<b class="nc">&nbsp;          an1.setText(newText);</b>
+<b class="nc">&nbsp;          announcementRepository.save(an1);</b>
+<b class="nc">&nbsp;          return &quot;updated text&quot;;</b>
+&nbsp;      }else{
+<b class="nc">&nbsp;          return &quot;announcement not found&quot;;</b>
+&nbsp;      }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this method deletes an instance of the announcement class by id, which is given in the parameter
+&nbsp;     * @param id
+&nbsp;     * @return
+&nbsp;     */
+&nbsp;    @DeleteMapping(path = &quot;/announcements/{id}&quot;)
+&nbsp;    public String deleteAnnouncement(@PathVariable int id) {
+<b class="nc">&nbsp;       Optional&lt;Announcement&gt; existingUser = announcementRepository.findById(id);</b>
+<b class="nc">&nbsp;       if(existingUser.isPresent()){</b>
+<b class="nc">&nbsp;           announcementRepository.deleteById(existingUser.get().getId());</b>
+<b class="nc">&nbsp;           return &quot;announcement deleted&quot;;</b>
+&nbsp;       }else{
+<b class="nc">&nbsp;           return &quot;announcement not found&quot;;</b>
+&nbsp;       }
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this method returns all instances of the announcement class saved in the respository(database)
+&nbsp;     * @return
+&nbsp;     */
+&nbsp;    @GetMapping(path = &quot;/announcements/all&quot;)
+&nbsp;    public List&lt;Announcement&gt; getAllAnnouncements(){
+<b class="nc">&nbsp;         return announcementRepository.findAll();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-12-04 23:37</div>
+</div>
+</body>
+</html>

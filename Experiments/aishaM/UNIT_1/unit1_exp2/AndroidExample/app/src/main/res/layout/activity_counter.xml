@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="100dp"
+        android:text="0"
+        android:textColor="#228B22"
+        android:textSize="130sp"></TextView>
+
+    <Button
+        android:id="@+id/counter_increase_btn"
+        android:layout_width="150dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:textColor="#4CBB17"
+        android:backgroundTint="@color/black"
+        android:text="Increase">
+
+    </Button>
+
+    <Button
+        android:id="@+id/counter_multiply_btn"
+        android:layout_width="150dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:textColor="#4CBB17"
+        android:backgroundTint="@color/black"
+        android:text="Multiply by 2">
+
+    </Button>
+
+    <!--android:inputType="number"-->
+
+    <Button
+        android:id="@+id/counter_decrease_btn"
+        android:layout_width="150dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:textColor="#4CBB17"
+        android:backgroundTint="@color/black"
+        android:text="Decrease">
+
+    </Button>
+
+    <Button
+        android:id="@+id/counter_back_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="80dp"
+        android:textColor="#4CBB17"
+        android:backgroundTint="@color/material_dynamic_secondary10"
+        android:text="Back to Main">
+
+    </Button>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

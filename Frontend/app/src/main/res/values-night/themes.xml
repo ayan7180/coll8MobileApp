@@ -1,0 +1,9 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.Home_page.WithActionBar" parent="Theme.AppCompat.DayNight.DarkActionBar">
+        <!-- Customize your theme with Action Bar here, if needed -->
+        <item name="colorPrimary">@color/red</item>
+        <item name="colorPrimaryDark">@color/black</item>
+        <item name="colorAccent">@color/yellow</item>
+    </style>
+</resources>

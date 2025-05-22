@@ -1,0 +1,241 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > SysFile</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">backend.Files</a>
+</div>
+
+<h1>Coverage Summary for Class: SysFile (backend.Files)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">SysFile</td>
+<td class="coverageStat">
+  <span class="percent">
+    3.4%
+  </span>
+  <span class="absValue">
+    (1/29)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    8.1%
+  </span>
+  <span class="absValue">
+    (3/37)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">SysFile$HibernateInstantiator$HLPfYp6T</td>
+  </tr>
+  <tr>
+    <td class="name">SysFile$HibernateProxy$ro5oLLiG</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    3.4%
+  </span>
+  <span class="absValue">
+    (1/29)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    8.1%
+  </span>
+  <span class="absValue">
+    (3/37)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package backend.Files;
+&nbsp;
+&nbsp;import backend.Annotations.Annotation;
+&nbsp;import backend.Announcements.Announcement;
+&nbsp;import backend.Courses.Course;
+&nbsp;import backend.Users.*;
+&nbsp;import com.fasterxml.jackson.annotation.JsonIgnore;
+&nbsp;import com.fasterxml.jackson.annotation.JsonView;
+&nbsp;import jakarta.persistence.*;
+&nbsp;import org.hibernate.annotations.Cascade;
+&nbsp;
+&nbsp;import java.sql.Timestamp;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Set;
+&nbsp;
+&nbsp;@Entity
+&nbsp;public class SysFile implements Comparable&lt;SysFile&gt;{
+&nbsp;
+&nbsp;    @Id
+&nbsp;    @GeneratedValue(strategy = GenerationType.IDENTITY)
+&nbsp;    private int id;
+&nbsp;    private String filePath;
+&nbsp;    private String fileName;
+&nbsp;    private Timestamp creationDate;
+&nbsp;    //TODO lastModification never updated
+&nbsp;    private Timestamp lastModification;
+&nbsp;    private String fileType;
+&nbsp;
+&nbsp;    // TODO Any one-to-one&#39;s ?
+&nbsp;
+&nbsp;    @ManyToOne
+&nbsp;    @JoinColumn(name = &quot;courseID&quot;)
+&nbsp;    private Course course;
+&nbsp;
+&nbsp;    // TODO Not implemented
+&nbsp;    @ManyToMany(mappedBy = &quot;files_editAccess&quot;)
+&nbsp;    @JsonIgnore
+&nbsp;    private Set&lt;User&gt; users_editAccess;
+&nbsp;
+&nbsp;    @ManyToOne
+&nbsp;    @JoinColumn(name = &quot;ownerID&quot;)
+&nbsp;    private User owner;
+&nbsp;
+&nbsp;    @ManyToMany(cascade = CascadeType.ALL, mappedBy = &quot;references&quot;)
+&nbsp;    // Annotation referencing this
+&nbsp;    @JsonIgnore
+&nbsp;    private Set&lt;Annotation&gt; AnnRef;
+&nbsp;
+&nbsp;    // Annotations made on this file.
+&nbsp;    @OneToMany(cascade = CascadeType.ALL)
+&nbsp;    @JsonIgnore
+&nbsp;    private Set&lt;Annotation&gt; AnnChildren;
+&nbsp;
+&nbsp;    @OneToOne
+&nbsp;    @JsonIgnore
+&nbsp;    private User showcaseOwner;
+&nbsp;
+<b class="nc">&nbsp;    public SysFile(String fileName, String filePath, Course course, User owner){</b>
+<b class="nc">&nbsp;        this.fileName = fileName;</b>
+<b class="nc">&nbsp;        this.filePath = filePath;</b>
+<b class="nc">&nbsp;        this.course = course;</b>
+<b class="nc">&nbsp;        this.owner = owner;</b>
+<b class="nc">&nbsp;        creationDate = new Timestamp(System.currentTimeMillis());</b>
+<b class="nc">&nbsp;        lastModification = new Timestamp(creationDate.getTime());</b>
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    public SysFile(){</b>
+&nbsp;//        this.filePath = null;
+&nbsp;//        this.creationDate = null;
+&nbsp;//        this.lastModification = null;
+&nbsp;//        this.course = null;
+<b class="fc">&nbsp;            creationDate = new Timestamp(System.currentTimeMillis());</b>
+<b class="fc">&nbsp;            lastModification = new Timestamp(creationDate.getTime());</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    public int getId(){ return id; }</b>
+&nbsp;
+<b class="nc">&nbsp;    public void setFilePath(String filePath){ this.filePath = filePath; }</b>
+<b class="nc">&nbsp;    public String getFilePath(){ return this.filePath; }</b>
+&nbsp;
+<b class="nc">&nbsp;    public void setCreationDate(Timestamp creationDate){ this.creationDate = creationDate; }</b>
+<b class="nc">&nbsp;    public Timestamp getCreationDate(){ return this.creationDate; }</b>
+&nbsp;
+<b class="nc">&nbsp;    public void setLastModification(Timestamp lastModification){ this.lastModification = lastModification; }</b>
+<b class="nc">&nbsp;    public Timestamp getLastModification(){ return this.lastModification; }</b>
+&nbsp;
+<b class="nc">&nbsp;    public void setCourse(Course course){ this.course = course; }</b>
+<b class="nc">&nbsp;    public Course getCourse(){ return this.course; }</b>
+&nbsp;
+<b class="nc">&nbsp;    public void setOwner(User owner){ this.owner = owner; }</b>
+<b class="nc">&nbsp;    public User getOwner() { return this.owner; }</b>
+&nbsp;
+<b class="nc">&nbsp;    public void addEditor(User editor){ this.users_editAccess.add(editor); }</b>
+<b class="nc">&nbsp;    public Set&lt;User&gt; getEditors() { return this.users_editAccess; }</b>
+&nbsp;
+<b class="nc">&nbsp;    public String getFileType(){ return fileType; }</b>
+<b class="nc">&nbsp;    public void setFileType(String fileType){ this.fileType = fileType; }</b>
+&nbsp;
+<b class="nc">&nbsp;    public String getFileName(){ return fileName; }</b>
+<b class="nc">&nbsp;    public void setFileName(String fileName){ this.fileName = fileName; }</b>
+&nbsp;
+<b class="nc">&nbsp;    public Set&lt;Annotation&gt; getAnnChildren() { return AnnChildren; }</b>
+<b class="nc">&nbsp;    public void setAnnChildren(Set&lt;Annotation&gt; annChildren) { AnnChildren = annChildren; }</b>
+<b class="nc">&nbsp;    public void addAnnChild(Annotation ann) { AnnChildren.add(ann); }</b>
+<b class="nc">&nbsp;    public void removeAnnChild(Annotation ann) { AnnChildren.remove(ann); }</b>
+&nbsp;
+<b class="nc">&nbsp;    public Set&lt;Annotation&gt; getAnnRef() { return AnnRef; }</b>
+<b class="nc">&nbsp;    public void setAnnRef(Set&lt;Annotation&gt; annRef) { AnnRef = annRef; }</b>
+<b class="nc">&nbsp;    public void addAnnRef(Annotation ann) { AnnRef.add(ann); }</b>
+<b class="nc">&nbsp;    public void removeAnnRef(Annotation ann) { AnnRef.remove(ann); }</b>
+&nbsp;
+&nbsp;    public void setShowcaseOwner(User showcaseOwner) {
+<b class="nc">&nbsp;        this.showcaseOwner = showcaseOwner;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // TODO References
+&nbsp;    // TODO Annotations
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public int compareTo(SysFile o) {
+<b class="nc">&nbsp;        return this.lastModification.compareTo(o.lastModification);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-12-04 23:37</div>
+</div>
+</body>
+</html>

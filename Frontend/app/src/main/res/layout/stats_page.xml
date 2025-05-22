@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Confetti needed when switched to this page -->
+    <ImageButton
+        android:id="@+id/homeButton"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_gravity="start|top"
+        android:backgroundTint="@color/white"
+        app:srcCompat="@drawable/homeimg_btn" />
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="match_parent"
+        android:layout_height="125dp"
+        app:srcCompat="@drawable/stats" />
+
+    <TextView
+        android:id="@+id/filesUploadedText"
+        android:layout_width="130dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="90dp"
+        android:padding="16dp"
+        android:text="0 Files Uploaded!"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:background="@drawable/gradient_background"
+        android:layout_gravity="center"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/annotationsText"
+        android:layout_width="142dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/gradient_background"
+        android:gravity="center"
+        android:padding="16dp"
+        android:text="0 Annotations!"
+        android:textColor="@android:color/white"
+        android:textSize="18sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="Keep Going!"
+        android:textColor="@color/red"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_gravity="center" />
+
+    <Button
+        android:id="@+id/moveOnButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Move On?"
+        android:textColor="@color/yellow"
+        android:backgroundTint="@color/red"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center" />
+
+</LinearLayout>

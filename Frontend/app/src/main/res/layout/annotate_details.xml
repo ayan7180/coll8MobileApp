@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="3dp">
+
+    <ImageButton
+        android:id="@+id/homeButton"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_gravity="start|top"
+        android:backgroundTint="@color/white"
+        app:srcCompat="@drawable/homeimg_btn" />
+
+    <TextView
+        android:id="@+id/Title"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:text="File Information"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textSize="20sp"
+        android:background="@drawable/gradient_background"
+        android:textColor="@color/white"
+        />
+    <TextView
+        android:id="@+id/fileTitleTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:text="File Title:"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        />
+
+    <!-- download btn only visible for non-txt and video -->
+    <Button
+        android:id="@+id/downloadButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Download"
+        android:visibility="gone"/>
+
+    <!-- Annotation Area, visible for txt and mp4 files -->
+    <LinearLayout
+        android:id="@+id/annotationContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <!--A scrollview for the txt-->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/linesContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+            </LinearLayout>
+        </ScrollView>
+
+        <!-- To create and save annotation -->
+        <EditText
+            android:id="@+id/lineAnnotationEditor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter your annotation here"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/saveLineAnnotationButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save Annotation"
+            android:visibility="gone" />
+
+        <!-- For mp4 files: Display a video player and timestamp comment section -->
+        <VideoView
+            android:id="@+id/videoPlayer"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/addCommentButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Comment"
+            android:visibility="gone" />
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/deleteFile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:text="DELETE"
+            android:backgroundTint="@color/red"
+            android:textColor="@color/yellow"/>
+
+    </RelativeLayout>
+</LinearLayout>

@@ -1,0 +1,123 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > AnnouncementRepository</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">backend.Announcements</a>
+</div>
+
+<h1>Coverage Summary for Class: AnnouncementRepository (backend.Announcements)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">AnnouncementRepository</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package backend.Announcements;
+&nbsp;
+&nbsp;import org.springframework.data.jpa.repository.JpaRepository;
+&nbsp;import org.springframework.data.repository.CrudRepository;  //crudrepo or jparepo
+&nbsp;import org.springframework.transaction.annotation.Transactional;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;/**
+&nbsp; * @author Soma Germano
+&nbsp; * This class handles the CRUD operations provided by the JpaRepository Interface
+&nbsp; */
+&nbsp;public interface AnnouncementRepository extends JpaRepository&lt;Announcement, Integer&gt; {
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this method retrieves and instance of announcement by the title
+&nbsp;     * @param title
+&nbsp;     * @return
+&nbsp;     */
+&nbsp;    Optional&lt;Announcement&gt; findByTitle(String title);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this method retrieves an instance of announcement by the id
+&nbsp;     * @param id
+&nbsp;     * @return
+&nbsp;     */
+&nbsp;    Optional&lt;Announcement&gt; findById(int id);
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this method saves an instance of the announcement class in the database
+&nbsp;     * overrides the save from the jpa repo
+&nbsp;     * @param announcement
+&nbsp;     * @return
+&nbsp;     */
+&nbsp;    Announcement save(Announcement announcement);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this method deletes an instance of the announcement class from the database by id
+&nbsp;     * @param id
+&nbsp;     */
+&nbsp;    @Transactional
+&nbsp;    void deleteById(int id);
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this method lists/retrieves all instances of the announcement class from the database
+&nbsp;     * @return
+&nbsp;     */
+&nbsp;    List&lt;Announcement&gt; findAll();
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-12-04 23:37</div>
+</div>
+</body>
+</html>
